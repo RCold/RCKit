@@ -1,0 +1,366 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C325D05A1C7FF8B8005F4902 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D0591C7FF8B8005F4902 /* main.m */; };
+		C325D05D1C7FF8B8005F4902 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D05C1C7FF8B8005F4902 /* AppDelegate.m */; };
+		C325D0631C7FF8B8005F4902 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C325D0611C7FF8B8005F4902 /* Main.storyboard */; };
+		C325D0651C7FF8B8005F4902 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C325D0641C7FF8B8005F4902 /* Assets.xcassets */; };
+		C325D0681C7FF8B8005F4902 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C325D0661C7FF8B8005F4902 /* LaunchScreen.storyboard */; };
+		C325D0821C7FF8D3005F4902 /* RCAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D0711C7FF8D3005F4902 /* RCAlertController.m */; };
+		C325D0831C7FF8D3005F4902 /* RCButtonCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D0731C7FF8D3005F4902 /* RCButtonCollectionView.m */; };
+		C325D0841C7FF8D3005F4902 /* RCImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D0751C7FF8D3005F4902 /* RCImage.m */; };
+		C325D0851C7FF8D3005F4902 /* RCLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D0781C7FF8D3005F4902 /* RCLineChartView.m */; };
+		C325D0861C7FF8D3005F4902 /* RCLockView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C325D0791C7FF8D3005F4902 /* RCLockView.bundle */; };
+		C325D0871C7FF8D3005F4902 /* RCLockView.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D07B1C7FF8D3005F4902 /* RCLockView.m */; };
+		C325D0881C7FF8D3005F4902 /* RCNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D07D1C7FF8D3005F4902 /* RCNavigationBar.m */; };
+		C325D0891C7FF8D3005F4902 /* RCNavigationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D07F1C7FF8D3005F4902 /* RCNavigationItem.m */; };
+		C325D08A1C7FF8D3005F4902 /* RCTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D0811C7FF8D3005F4902 /* RCTextField.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C325D0551C7FF8B8005F4902 /* RCKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RCKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C325D0591C7FF8B8005F4902 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C325D05B1C7FF8B8005F4902 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		C325D05C1C7FF8B8005F4902 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C325D0621C7FF8B8005F4902 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C325D0641C7FF8B8005F4902 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C325D0671C7FF8B8005F4902 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C325D0691C7FF8B8005F4902 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C325D0701C7FF8D3005F4902 /* RCAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAlertController.h; sourceTree = "<group>"; };
+		C325D0711C7FF8D3005F4902 /* RCAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAlertController.m; sourceTree = "<group>"; };
+		C325D0721C7FF8D3005F4902 /* RCButtonCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCButtonCollectionView.h; sourceTree = "<group>"; };
+		C325D0731C7FF8D3005F4902 /* RCButtonCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCButtonCollectionView.m; sourceTree = "<group>"; };
+		C325D0741C7FF8D3005F4902 /* RCImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCImage.h; sourceTree = "<group>"; };
+		C325D0751C7FF8D3005F4902 /* RCImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCImage.m; sourceTree = "<group>"; };
+		C325D0761C7FF8D3005F4902 /* RCKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCKit.h; sourceTree = "<group>"; };
+		C325D0771C7FF8D3005F4902 /* RCLineChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCLineChartView.h; sourceTree = "<group>"; };
+		C325D0781C7FF8D3005F4902 /* RCLineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCLineChartView.m; sourceTree = "<group>"; };
+		C325D0791C7FF8D3005F4902 /* RCLockView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RCLockView.bundle; sourceTree = "<group>"; };
+		C325D07A1C7FF8D3005F4902 /* RCLockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCLockView.h; sourceTree = "<group>"; };
+		C325D07B1C7FF8D3005F4902 /* RCLockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCLockView.m; sourceTree = "<group>"; };
+		C325D07C1C7FF8D3005F4902 /* RCNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNavigationBar.h; sourceTree = "<group>"; };
+		C325D07D1C7FF8D3005F4902 /* RCNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNavigationBar.m; sourceTree = "<group>"; };
+		C325D07E1C7FF8D3005F4902 /* RCNavigationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNavigationItem.h; sourceTree = "<group>"; };
+		C325D07F1C7FF8D3005F4902 /* RCNavigationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNavigationItem.m; sourceTree = "<group>"; };
+		C325D0801C7FF8D3005F4902 /* RCTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTextField.h; sourceTree = "<group>"; };
+		C325D0811C7FF8D3005F4902 /* RCTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTextField.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C325D0521C7FF8B8005F4902 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C325D04C1C7FF8B8005F4902 = {
+			isa = PBXGroup;
+			children = (
+				C325D06F1C7FF8D3005F4902 /* RCKit */,
+				C325D0571C7FF8B8005F4902 /* RCKitDemo */,
+				C325D0561C7FF8B8005F4902 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C325D0561C7FF8B8005F4902 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C325D0551C7FF8B8005F4902 /* RCKitDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C325D0571C7FF8B8005F4902 /* RCKitDemo */ = {
+			isa = PBXGroup;
+			children = (
+				C325D05B1C7FF8B8005F4902 /* AppDelegate.h */,
+				C325D05C1C7FF8B8005F4902 /* AppDelegate.m */,
+				C325D0611C7FF8B8005F4902 /* Main.storyboard */,
+				C325D0641C7FF8B8005F4902 /* Assets.xcassets */,
+				C325D0661C7FF8B8005F4902 /* LaunchScreen.storyboard */,
+				C325D0581C7FF8B8005F4902 /* Supporting Files */,
+			);
+			path = RCKitDemo;
+			sourceTree = "<group>";
+		};
+		C325D0581C7FF8B8005F4902 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C325D0691C7FF8B8005F4902 /* Info.plist */,
+				C325D0591C7FF8B8005F4902 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C325D06F1C7FF8D3005F4902 /* RCKit */ = {
+			isa = PBXGroup;
+			children = (
+				C325D0701C7FF8D3005F4902 /* RCAlertController.h */,
+				C325D0711C7FF8D3005F4902 /* RCAlertController.m */,
+				C325D0721C7FF8D3005F4902 /* RCButtonCollectionView.h */,
+				C325D0731C7FF8D3005F4902 /* RCButtonCollectionView.m */,
+				C325D0741C7FF8D3005F4902 /* RCImage.h */,
+				C325D0751C7FF8D3005F4902 /* RCImage.m */,
+				C325D0761C7FF8D3005F4902 /* RCKit.h */,
+				C325D0771C7FF8D3005F4902 /* RCLineChartView.h */,
+				C325D0781C7FF8D3005F4902 /* RCLineChartView.m */,
+				C325D0791C7FF8D3005F4902 /* RCLockView.bundle */,
+				C325D07A1C7FF8D3005F4902 /* RCLockView.h */,
+				C325D07B1C7FF8D3005F4902 /* RCLockView.m */,
+				C325D07C1C7FF8D3005F4902 /* RCNavigationBar.h */,
+				C325D07D1C7FF8D3005F4902 /* RCNavigationBar.m */,
+				C325D07E1C7FF8D3005F4902 /* RCNavigationItem.h */,
+				C325D07F1C7FF8D3005F4902 /* RCNavigationItem.m */,
+				C325D0801C7FF8D3005F4902 /* RCTextField.h */,
+				C325D0811C7FF8D3005F4902 /* RCTextField.m */,
+			);
+			name = RCKit;
+			path = ../RCKit;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C325D0541C7FF8B8005F4902 /* RCKitDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C325D06C1C7FF8B8005F4902 /* Build configuration list for PBXNativeTarget "RCKitDemo" */;
+			buildPhases = (
+				C325D0511C7FF8B8005F4902 /* Sources */,
+				C325D0521C7FF8B8005F4902 /* Frameworks */,
+				C325D0531C7FF8B8005F4902 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RCKitDemo;
+			productName = RCKitDemo;
+			productReference = C325D0551C7FF8B8005F4902 /* RCKitDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C325D04D1C7FF8B8005F4902 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Yeuham Wang";
+				TargetAttributes = {
+					C325D0541C7FF8B8005F4902 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+				};
+			};
+			buildConfigurationList = C325D0501C7FF8B8005F4902 /* Build configuration list for PBXProject "RCKitDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+			);
+			mainGroup = C325D04C1C7FF8B8005F4902;
+			productRefGroup = C325D0561C7FF8B8005F4902 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C325D0541C7FF8B8005F4902 /* RCKitDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C325D0531C7FF8B8005F4902 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C325D0681C7FF8B8005F4902 /* LaunchScreen.storyboard in Resources */,
+				C325D0651C7FF8B8005F4902 /* Assets.xcassets in Resources */,
+				C325D0861C7FF8D3005F4902 /* RCLockView.bundle in Resources */,
+				C325D0631C7FF8B8005F4902 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C325D0511C7FF8B8005F4902 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C325D0871C7FF8D3005F4902 /* RCLockView.m in Sources */,
+				C325D0851C7FF8D3005F4902 /* RCLineChartView.m in Sources */,
+				C325D0841C7FF8D3005F4902 /* RCImage.m in Sources */,
+				C325D08A1C7FF8D3005F4902 /* RCTextField.m in Sources */,
+				C325D0891C7FF8D3005F4902 /* RCNavigationItem.m in Sources */,
+				C325D0831C7FF8D3005F4902 /* RCButtonCollectionView.m in Sources */,
+				C325D05D1C7FF8B8005F4902 /* AppDelegate.m in Sources */,
+				C325D05A1C7FF8B8005F4902 /* main.m in Sources */,
+				C325D0821C7FF8D3005F4902 /* RCAlertController.m in Sources */,
+				C325D0881C7FF8D3005F4902 /* RCNavigationBar.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		C325D0611C7FF8B8005F4902 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C325D0621C7FF8B8005F4902 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C325D0661C7FF8B8005F4902 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C325D0671C7FF8B8005F4902 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C325D06A1C7FF8B8005F4902 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C325D06B1C7FF8B8005F4902 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C325D06D1C7FF8B8005F4902 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
+				INFOPLIST_FILE = RCKitDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = name.rcold.RCKitDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C325D06E1C7FF8B8005F4902 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
+				INFOPLIST_FILE = RCKitDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = name.rcold.RCKitDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C325D0501C7FF8B8005F4902 /* Build configuration list for PBXProject "RCKitDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C325D06A1C7FF8B8005F4902 /* Debug */,
+				C325D06B1C7FF8B8005F4902 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C325D06C1C7FF8B8005F4902 /* Build configuration list for PBXNativeTarget "RCKitDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C325D06D1C7FF8B8005F4902 /* Debug */,
+				C325D06E1C7FF8B8005F4902 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C325D04D1C7FF8B8005F4902 /* Project object */;
+}
