@@ -25,25 +25,35 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self != nil)
-        [self initChoiceControl];
+        [self initButtonCollectionView];
     return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self != nil)
-        [self initChoiceControl];
+        [self initButtonCollectionView];
     return self;
 }
 
-- (void)initChoiceControl {
+- (void)initButtonCollectionView {
     _allowSelection = YES;
     _allowMultiSelection = NO;
+    _edgeInsets = UIEdgeInsetsZero;
+    _interitemSpacing = 8.0;
+    _lineSpacing = 8.0;
+    _preferredLayoutWidth = 0.0;
 }
 
 - (void)setAllowSelection:(BOOL)allowSelection {
     _allowSelection = allowSelection;
     if (!_allowSelection)
+        [self deselectAllButtons];
+}
+
+- (void)setAllowMultiSelection:(BOOL)allowMultiSelection {
+    _allowMultiSelection = allowMultiSelection;
+    if (!_allowMultiSelection)
         [self deselectAllButtons];
 }
 
@@ -62,6 +72,26 @@
         if (button.selected)
             [selectedButtons addObject:button];
     return [selectedButtons copy];
+}
+
+- (void)setPreferredLayoutWidth:(CGFloat)preferredLayoutWidth {
+    _preferredLayoutWidth = preferredLayoutWidth;
+    [self setNeedsLayout];
+}
+
+- (void)setLineSpacing:(CGFloat)lineSpacing {
+    _lineSpacing = lineSpacing;
+    [self setNeedsLayout];
+}
+
+- (void)setInteritemSpacing:(CGFloat)interitemSpacing {
+    _interitemSpacing = interitemSpacing;
+    [self setNeedsLayout];
+}
+
+- (void)setEdgeInsets:(UIEdgeInsets)edgeInsets {
+    _edgeInsets = edgeInsets;
+    [self setNeedsLayout];
 }
 
 - (void)selectButtonAtIndex:(NSUInteger)index {
@@ -107,51 +137,53 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    CGSize size = self.bounds.size;
-    CGPoint currentOrigin = CGPointZero;
+    CGFloat layoutWidth = self.bounds.size.width;
+    CGPoint currentOrigin = CGPointMake(_edgeInsets.left, _edgeInsets.top);
     CGSize currentSize;
     CGFloat currentRowHeight = 0.0;
     CGRect frame;
+    if (_preferredLayoutWidth != 0.0)
+        layoutWidth = _preferredLayoutWidth;
     for (UIButton *button in _buttons) {
         currentSize = button.frame.size;
-        if (currentOrigin.x + currentSize.width + 8.0 > size.width) {
-            currentOrigin.x = 0.0;
+        if (currentOrigin.x + currentSize.width > layoutWidth - _edgeInsets.right) {
+            currentOrigin.x = _edgeInsets.left;
             currentOrigin.y += currentRowHeight;
             currentRowHeight = 0.0;
         }
-        if (currentRowHeight < currentSize.height + 8.0)
-            currentRowHeight = currentSize.height + 8.0;
         frame.origin = currentOrigin;
         frame.size = currentSize;
         button.frame = frame;
-        currentOrigin.x += currentSize.width + 8.0;
+        currentOrigin.x += currentSize.width + _interitemSpacing;
+        if (currentRowHeight < currentSize.height + _lineSpacing)
+            currentRowHeight = currentSize.height + _lineSpacing;
     }
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
-    CGPoint currentOrigin = CGPointZero;
+    CGPoint currentOrigin = CGPointMake(_edgeInsets.left, _edgeInsets.top);
     CGSize currentSize;
     CGFloat currentRowHeight = 0.0;
-    CGRect frame;
     for (UIButton *button in _buttons) {
         currentSize = button.frame.size;
-        if (currentOrigin.x + currentSize.width + 8.0 > size.width) {
-            currentOrigin.x = 0.0;
+        if (currentOrigin.x + currentSize.width > size.width - _edgeInsets.right) {
+            currentOrigin.x = _edgeInsets.left;
             currentOrigin.y += currentRowHeight;
             currentRowHeight = 0.0;
         }
-        if (currentRowHeight < currentSize.height + 8.0)
-            currentRowHeight = currentSize.height + 8.0;
-        frame.origin = currentOrigin;
-        frame.size = currentSize;
-        currentOrigin.x += currentSize.width + 8.0;
+        currentOrigin.x += currentSize.width + _interitemSpacing;
+        if (currentRowHeight < currentSize.height + _lineSpacing)
+            currentRowHeight = currentSize.height + _lineSpacing;
     }
-    size.height = currentOrigin.y + currentRowHeight - 8.0;
+    size.height = currentOrigin.y + currentRowHeight - _lineSpacing + _edgeInsets.bottom;
     return size;
 }
 
 - (CGSize)intrinsicContentSize {
-    return [self sizeThatFits:self.bounds.size];
+    CGSize size = self.bounds.size;
+    if (_preferredLayoutWidth != 0.0)
+        size.width = _preferredLayoutWidth;
+    return [self sizeThatFits:size];
 }
 
 @end
