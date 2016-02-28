@@ -38,7 +38,7 @@
 
 - (void)initButtonCollectionView {
     _allowSelection = YES;
-    _allowMultiSelection = NO;
+    _allowMultipleSelection = NO;
     _edgeInsets = UIEdgeInsetsZero;
     _interitemSpacing = 8.0;
     _lineSpacing = 8.0;
@@ -52,8 +52,8 @@
 }
 
 - (void)setAllowMultiSelection:(BOOL)allowMultiSelection {
-    _allowMultiSelection = allowMultiSelection;
-    if (!_allowMultiSelection)
+    allowMultiSelection = allowMultiSelection;
+    if (!allowMultiSelection)
         [self deselectAllButtons];
 }
 
@@ -97,14 +97,14 @@
 - (void)selectButtonAtIndex:(NSUInteger)index {
     if (!_allowSelection)
         return;
-    if (!_allowMultiSelection)
+    if (!_allowMultipleSelection)
         [self deselectAllButtons];
     if (index < _buttons.count)
         ((UIButton *)_buttons[index]).selected = YES;
 }
 
 - (void)selectAllButtons {
-    if (!_allowMultiSelection)
+    if (!_allowMultipleSelection)
         return;
     for (UIButton *button in _buttons)
         button.selected = YES;
@@ -123,7 +123,7 @@
 - (void)buttonDidTouch:(UIButton *)button {
     if (!_allowSelection)
         return;
-    if (!_allowMultiSelection)
+    if (!_allowMultipleSelection)
         [self deselectAllButtons];
     button.selected = !button.selected;
     if (button.selected) {

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C313CB931C82D1330014FC1E /* CustomAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = C313CB921C82D1330014FC1E /* CustomAlertController.m */; };
+		C313CB961C82D2510014FC1E /* ShowAlertSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = C313CB951C82D2510014FC1E /* ShowAlertSegue.m */; };
+		C313CB9A1C82D3020014FC1E /* ShowActionSheetSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = C313CB991C82D3020014FC1E /* ShowActionSheetSegue.m */; };
+		C313CB9E1C82D80A0014FC1E /* ButtonCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C313CB9D1C82D80A0014FC1E /* ButtonCollectionViewController.m */; };
 		C325D05A1C7FF8B8005F4902 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D0591C7FF8B8005F4902 /* main.m */; };
 		C325D05D1C7FF8B8005F4902 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D05C1C7FF8B8005F4902 /* AppDelegate.m */; };
 		C325D0631C7FF8B8005F4902 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C325D0611C7FF8B8005F4902 /* Main.storyboard */; };
@@ -24,6 +28,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C313CB911C82D1330014FC1E /* CustomAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAlertController.h; sourceTree = "<group>"; };
+		C313CB921C82D1330014FC1E /* CustomAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAlertController.m; sourceTree = "<group>"; };
+		C313CB941C82D2510014FC1E /* ShowAlertSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowAlertSegue.h; sourceTree = "<group>"; };
+		C313CB951C82D2510014FC1E /* ShowAlertSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowAlertSegue.m; sourceTree = "<group>"; };
+		C313CB981C82D3020014FC1E /* ShowActionSheetSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowActionSheetSegue.h; sourceTree = "<group>"; };
+		C313CB991C82D3020014FC1E /* ShowActionSheetSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowActionSheetSegue.m; sourceTree = "<group>"; };
+		C313CB9C1C82D80A0014FC1E /* ButtonCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonCollectionViewController.h; sourceTree = "<group>"; };
+		C313CB9D1C82D80A0014FC1E /* ButtonCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonCollectionViewController.m; sourceTree = "<group>"; };
 		C325D0551C7FF8B8005F4902 /* RCKitDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RCKitDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C325D0591C7FF8B8005F4902 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C325D05B1C7FF8B8005F4902 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -63,6 +75,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C313CB971C82D25D0014FC1E /* RCAlertControllerDemo */ = {
+			isa = PBXGroup;
+			children = (
+				C313CB911C82D1330014FC1E /* CustomAlertController.h */,
+				C313CB921C82D1330014FC1E /* CustomAlertController.m */,
+				C313CB981C82D3020014FC1E /* ShowActionSheetSegue.h */,
+				C313CB991C82D3020014FC1E /* ShowActionSheetSegue.m */,
+				C313CB941C82D2510014FC1E /* ShowAlertSegue.h */,
+				C313CB951C82D2510014FC1E /* ShowAlertSegue.m */,
+			);
+			name = RCAlertControllerDemo;
+			sourceTree = "<group>";
+		};
+		C313CB9B1C82D7D60014FC1E /* RCButtonCollectionViewDemo */ = {
+			isa = PBXGroup;
+			children = (
+				C313CB9C1C82D80A0014FC1E /* ButtonCollectionViewController.h */,
+				C313CB9D1C82D80A0014FC1E /* ButtonCollectionViewController.m */,
+			);
+			name = RCButtonCollectionViewDemo;
+			sourceTree = "<group>";
+		};
 		C325D04C1C7FF8B8005F4902 = {
 			isa = PBXGroup;
 			children = (
@@ -85,9 +119,11 @@
 			children = (
 				C325D05B1C7FF8B8005F4902 /* AppDelegate.h */,
 				C325D05C1C7FF8B8005F4902 /* AppDelegate.m */,
-				C325D0611C7FF8B8005F4902 /* Main.storyboard */,
 				C325D0641C7FF8B8005F4902 /* Assets.xcassets */,
 				C325D0661C7FF8B8005F4902 /* LaunchScreen.storyboard */,
+				C325D0611C7FF8B8005F4902 /* Main.storyboard */,
+				C313CB971C82D25D0014FC1E /* RCAlertControllerDemo */,
+				C313CB9B1C82D7D60014FC1E /* RCButtonCollectionViewDemo */,
 				C325D0581C7FF8B8005F4902 /* Supporting Files */,
 			);
 			path = RCKitDemo;
@@ -199,11 +235,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				C325D0871C7FF8D3005F4902 /* RCLockView.m in Sources */,
+				C313CB961C82D2510014FC1E /* ShowAlertSegue.m in Sources */,
+				C313CB9E1C82D80A0014FC1E /* ButtonCollectionViewController.m in Sources */,
 				C325D0851C7FF8D3005F4902 /* RCLineChartView.m in Sources */,
+				C313CB931C82D1330014FC1E /* CustomAlertController.m in Sources */,
 				C325D0841C7FF8D3005F4902 /* RCImage.m in Sources */,
 				C325D08A1C7FF8D3005F4902 /* RCTextField.m in Sources */,
 				C325D0891C7FF8D3005F4902 /* RCNavigationItem.m in Sources */,
 				C325D0831C7FF8D3005F4902 /* RCButtonCollectionView.m in Sources */,
+				C313CB9A1C82D3020014FC1E /* ShowActionSheetSegue.m in Sources */,
 				C325D05D1C7FF8B8005F4902 /* AppDelegate.m in Sources */,
 				C325D05A1C7FF8B8005F4902 /* main.m in Sources */,
 				C325D0821C7FF8D3005F4902 /* RCAlertController.m in Sources */,
