@@ -148,7 +148,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mmb-XK-jEE">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kAT-zJ-Kq0" customClass="RCButtonCollectionView">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="0.0"/>
@@ -343,8 +343,8 @@
                                     <constraint firstAttribute="trailing" secondItem="kAT-zJ-Kq0" secondAttribute="trailing" id="l2p-7l-zRB"/>
                                     <constraint firstItem="Le6-ZR-hT2" firstAttribute="leading" secondItem="Mmb-XK-jEE" secondAttribute="leading" id="nhP-fT-uRh"/>
                                     <constraint firstItem="AQM-r3-TBf" firstAttribute="leading" secondItem="Mmb-XK-jEE" secondAttribute="leading" id="tZy-M1-aGo"/>
-                                    <constraint firstAttribute="height" constant="568" id="uFo-KR-0Y7"/>
                                     <constraint firstItem="Le6-ZR-hT2" firstAttribute="leading" secondItem="Mmb-XK-jEE" secondAttribute="leading" id="vWu-c1-tFL"/>
+                                    <constraint firstAttribute="bottom" secondItem="AZF-K8-9By" secondAttribute="bottom" id="wAG-Zd-mop"/>
                                     <constraint firstAttribute="trailing" secondItem="AQM-r3-TBf" secondAttribute="trailing" id="wcJ-HF-WYw"/>
                                     <constraint firstItem="2tJ-XO-89W" firstAttribute="leading" secondItem="Mmb-XK-jEE" secondAttribute="leading" id="yBN-eR-TMg"/>
                                 </constraints>
@@ -352,10 +352,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Mmb-XK-jEE" firstAttribute="width" secondItem="6JG-fq-ba7" secondAttribute="width" id="MTH-19-8q7"/>
                             <constraint firstItem="Mmb-XK-jEE" firstAttribute="top" secondItem="6JG-fq-ba7" secondAttribute="top" id="RNW-Si-kAL"/>
+                            <constraint firstAttribute="bottom" secondItem="Mmb-XK-jEE" secondAttribute="bottom" id="clp-8R-Re3"/>
                             <constraint firstAttribute="trailing" secondItem="Mmb-XK-jEE" secondAttribute="trailing" id="hFM-P5-jUG"/>
-                            <constraint firstItem="DmZ-n5-QN3" firstAttribute="top" secondItem="Mmb-XK-jEE" secondAttribute="bottom" id="sE8-c4-roH"/>
+                            <constraint firstItem="Mmb-XK-jEE" firstAttribute="width" secondItem="6JG-fq-ba7" secondAttribute="width" id="lPw-jw-6ug"/>
                             <constraint firstItem="Mmb-XK-jEE" firstAttribute="leading" secondItem="6JG-fq-ba7" secondAttribute="leading" id="sJS-yg-7Yj"/>
                         </constraints>
                     </scrollView>
