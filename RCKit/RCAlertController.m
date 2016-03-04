@@ -43,7 +43,6 @@
     _dimmingView.backgroundColor = [UIColor blackColor];
     _dimsBackgroundDuringPresentation = YES;
     _presented = NO;
-    _rootViewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
 }
 
 - (void)setDimsBackgroundDuringPresentation:(BOOL)dimsBackgroundDuringPresentation {
@@ -55,10 +54,11 @@
     if (_presented)
         return;
     _style = style;
-    _alertWindow.rootViewController = _rootViewController;
-    [_rootViewController addChildViewController:self];
-    [self didMoveToParentViewController:_rootViewController];
-    UIView *rootView = _rootViewController.view;
+    UIViewController *rootViewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
+    _alertWindow.rootViewController = rootViewController;
+    [rootViewController addChildViewController:self];
+    [self didMoveToParentViewController:rootViewController];
+    UIView *rootView = rootViewController.view;
     UIView *alertView = self.view;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     CGSize alertViewSize = alertView.bounds.size;
@@ -115,6 +115,7 @@
                 break;
         }
     } completion:^(BOOL finished) {
+        _alertWindow.hidden = YES;
         _alertWindow.rootViewController = nil;
         _presented = NO;
         [self willMoveToParentViewController:nil];

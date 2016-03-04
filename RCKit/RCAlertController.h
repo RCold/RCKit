@@ -30,7 +30,6 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface RCAlertController : UIViewController {
     RCAlertControllerStyle _style;
     UIWindow *_alertWindow;
     UIView *_dimmingView;
-    UIViewController *_rootViewController;
 }
 
 @property (nonatomic) BOOL dimsBackgroundDuringPresentation;
