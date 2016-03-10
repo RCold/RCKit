@@ -33,7 +33,15 @@ UIImage *UIImageFromColor(UIColor *color, CGSize size) {
 UIImage *UIImageFromImage(UIImage *image, CGSize size) {
     UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
     [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
-    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return scaledImage;
+}
+
+UIImage *UIImageFromView(UIView *view) {
+    UIGraphicsBeginImageContext(view.bounds.size);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
 }

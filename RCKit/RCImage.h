@@ -22,3 +22,4 @@
 
 UIImage *UIImageFromColor(UIColor *color, CGSize size);
 UIImage *UIImageFromImage(UIImage *image, CGSize size);
+UIImage *UIImageFromView(UIView *view);
