@@ -56,23 +56,23 @@
     _style = style;
     UIViewController *rootViewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
     _alertWindow.rootViewController = rootViewController;
-    [rootViewController addChildViewController:self];
-    [self didMoveToParentViewController:rootViewController];
     UIView *rootView = rootViewController.view;
     UIView *alertView = self.view;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     CGSize alertViewSize = alertView.bounds.size;
-    _dimmingView.alpha = 0.0;
+    [rootViewController addChildViewController:self];
     [rootView addSubview:_dimmingView];
-    alertView.alpha = 0.0;
     [rootView addSubview:alertView];
+    _dimmingView.alpha = 0.0;
     switch (_style) {
         case RCAlertControllerStyleActionSheet:
             [_dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)]];
             alertView.alpha = 1.0;
             alertView.center = CGPointMake(screenSize.width / 2.0, screenSize.height + alertViewSize.height / 2.0);
+            alertView.transform = CGAffineTransformIdentity;
             break;
         case RCAlertControllerStyleAlert:
+            alertView.alpha = 0.0;
             alertView.center = CGPointMake(screenSize.width / 2.0, screenSize.height / 2.0);
             alertView.transform = CGAffineTransformMakeScale(1.2, 1.2);
             break;
@@ -92,6 +92,7 @@
         }
     } completion:^(BOOL finished) {
         _presented = YES;
+        [self didMoveToParentViewController:rootViewController];
         if (!finished)
             [self dismissAlertAnimated:NO];
     }];
@@ -104,6 +105,7 @@
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     CGSize alertViewSize = self.view.bounds.size;
     CGFloat animationDuration = animated ? 0.4 : 0.0;
+    [self willMoveToParentViewController:nil];
     [UIView animateWithDuration:animationDuration delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:0 animations:^{
         _dimmingView.alpha = 0.0;
         switch (_style) {
@@ -118,7 +120,6 @@
         _alertWindow.hidden = YES;
         _alertWindow.rootViewController = nil;
         _presented = NO;
-        [self willMoveToParentViewController:nil];
         [self removeFromParentViewController];
     }];
 }
