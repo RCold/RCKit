@@ -20,7 +20,7 @@
 
 #import "RCNavigationBar.h"
 
-@interface UINavigationBar ()
+@interface UINavigationBar (RCNavigationBar)
 
 - (void)_setHidesShadow:(BOOL)hidesShadow;
 - (BOOL)_hidesShadow;
@@ -28,6 +28,18 @@
 @end
 
 @implementation RCNavigationBar
+
+- (void)setTitleTextColor:(UIColor *)titleTextColor {
+    NSMutableDictionary *titleTextAttributes = [self.titleTextAttributes mutableCopy];
+    if (titleTextAttributes == nil)
+        titleTextAttributes = [NSMutableDictionary dictionary];
+    titleTextAttributes[NSForegroundColorAttributeName] = titleTextColor;
+    self.titleTextAttributes = titleTextAttributes;
+}
+
+- (UIColor *)titleTextColor {
+    return self.titleTextAttributes[NSForegroundColorAttributeName];
+}
 
 - (void)setHidesShadow:(BOOL)hidesShadow {
     if ([super respondsToSelector:@selector(_setHidesShadow:)])
