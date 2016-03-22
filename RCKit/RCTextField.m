@@ -20,49 +20,17 @@
 
 #import "RCTextField.h"
 
-@interface UITextFieldLabel : UILabel
-
-@end
-
-@interface UITextField ()
-
-- (UIColor *)_placeholderColor;
-- (UITextFieldLabel *)_placeholderLabel;
-
-@end
-
 @implementation RCTextField
 
-- (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self != nil)
-        [self initTextField];
-    return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)coder {
-    self = [super initWithCoder:coder];
-    if (self)
-        [self initTextField];
-    return self;
-}
-
-- (void)initTextField {
-    if ([super respondsToSelector:@selector(_placeholderColor)])
-        _placeholderColor = [super _placeholderColor];
-    else
-        _placeholderColor = [UIColor colorWithWhite:0.7 alpha:1.0];
-}
-
 - (void)setPlaceholderColor:(UIColor *)placeholderColor {
-    _placeholderColor = placeholderColor;
-    [self setNeedsLayout];
+    NSMutableAttributedString *attributedPlaceholder = [super.attributedPlaceholder mutableCopy];
+    [attributedPlaceholder addAttribute:NSForegroundColorAttributeName value:placeholderColor range:NSMakeRange(0, attributedPlaceholder.length)];
+    self.attributedPlaceholder = attributedPlaceholder;
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    if ([super respondsToSelector:@selector(_placeholderLabel)])
-        [super _placeholderLabel].textColor = _placeholderColor;
+- (UIColor *)placeholderColor {
+    NSAttributedString *attributedPlaceholder = super.attributedPlaceholder;
+    return [attributedPlaceholder attribute:NSForegroundColorAttributeName atIndex:0 effectiveRange:NULL];
 }
 
 @end

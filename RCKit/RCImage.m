@@ -31,7 +31,7 @@ UIImage *UIImageFromColor(UIColor *color, CGSize size) {
 }
 
 UIImage *UIImageFromImage(UIImage *image, CGSize size) {
-    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
+    UIGraphicsBeginImageContext(size);
     [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
     UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

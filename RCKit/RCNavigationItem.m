@@ -29,8 +29,6 @@
 
 @implementation RCNavigationItem
 
-@dynamic backButtonTitle;
-
 - (instancetype)initWithTitle:(NSString *)title {
     self = [super initWithTitle:title];
     if (self != nil)

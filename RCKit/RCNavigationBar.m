@@ -29,8 +29,6 @@
 
 @implementation RCNavigationBar
 
-@dynamic hidesShadow;
-
 - (void)setHidesShadow:(BOOL)hidesShadow {
     if ([super respondsToSelector:@selector(_setHidesShadow:)])
         [super _setHidesShadow:hidesShadow];
