@@ -25,6 +25,7 @@
 		C325D0881C7FF8D3005F4902 /* RCNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D07D1C7FF8D3005F4902 /* RCNavigationBar.m */; };
 		C325D0891C7FF8D3005F4902 /* RCNavigationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D07F1C7FF8D3005F4902 /* RCNavigationItem.m */; };
 		C325D08A1C7FF8D3005F4902 /* RCTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D0811C7FF8D3005F4902 /* RCTextField.m */; };
+		C36D04D81CA133E700D18132 /* RCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C36D04D71CA133E700D18132 /* RCSearchBar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,8 @@
 		C325D07F1C7FF8D3005F4902 /* RCNavigationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNavigationItem.m; sourceTree = "<group>"; };
 		C325D0801C7FF8D3005F4902 /* RCTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTextField.h; sourceTree = "<group>"; };
 		C325D0811C7FF8D3005F4902 /* RCTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTextField.m; sourceTree = "<group>"; };
+		C36D04D61CA133E700D18132 /* RCSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchBar.h; sourceTree = "<group>"; };
+		C36D04D71CA133E700D18132 /* RCSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchBar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +160,8 @@
 				C325D07D1C7FF8D3005F4902 /* RCNavigationBar.m */,
 				C325D07E1C7FF8D3005F4902 /* RCNavigationItem.h */,
 				C325D07F1C7FF8D3005F4902 /* RCNavigationItem.m */,
+				C36D04D61CA133E700D18132 /* RCSearchBar.h */,
+				C36D04D71CA133E700D18132 /* RCSearchBar.m */,
 				C325D0801C7FF8D3005F4902 /* RCTextField.h */,
 				C325D0811C7FF8D3005F4902 /* RCTextField.m */,
 			);
@@ -242,6 +247,7 @@
 				C325D0841C7FF8D3005F4902 /* RCImage.m in Sources */,
 				C325D08A1C7FF8D3005F4902 /* RCTextField.m in Sources */,
 				C325D0891C7FF8D3005F4902 /* RCNavigationItem.m in Sources */,
+				C36D04D81CA133E700D18132 /* RCSearchBar.m in Sources */,
 				C325D0831C7FF8D3005F4902 /* RCButtonCollectionView.m in Sources */,
 				C313CB9A1C82D3020014FC1E /* ShowActionSheetSegue.m in Sources */,
 				C325D05D1C7FF8B8005F4902 /* AppDelegate.m in Sources */,

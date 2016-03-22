@@ -1,8 +1,8 @@
 //
-//  RCKit.h
+//  RCSearchBar.h
 //  RCKit
 //
-//  Created by Yeuham Wang on 16/2/24.
+//  Created by Yeuham Wang on 16/3/22.
 //  Copyright (c) 2016 Yeuham Wang.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,12 +20,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import "RCAlertController.h"
-#import "RCButtonCollectionView.h"
-#import "RCImage.h"
-#import "RCLineChartView.h"
-#import "RCLockView.h"
-#import "RCNavigationBar.h"
-#import "RCNavigationItem.h"
-#import "RCSearchBar.h"
-#import "RCTextField.h"
+@interface RCSearchBar : UISearchBar
+
+@property (strong, nonatomic) UIColor *placeholderColor;
+
+@end
