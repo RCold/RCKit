@@ -71,14 +71,6 @@
     leftView.tintColor = _placeholderColor;
 }
 
-- (void)setTextColor:(UIColor *)textColor {
-    [self _searchBarTextField].textColor = textColor;
-}
-
-- (UIColor *)textColor {
-    return [self _searchBarTextField].textColor;
-}
-
 - (void)setAttributedText:(NSAttributedString *)attributedText {
     [self _searchBarTextField].attributedText = attributedText;
 }
@@ -87,13 +79,40 @@
     return [self _searchBarTextField].attributedText;
 }
 
-- (void)setPlaceholder:(NSString *)placeholder {
-    super.placeholder = placeholder;
-    [self _updatePlaceholderColor];
+- (void)setFont:(UIFont *)font {
+    [self _searchBarTextField].font = font;
 }
 
-- (void)setPlaceholderColor:(UIColor *)placeholderColor {
-    _placeholderColor = placeholderColor;
+- (UIFont *)font {
+    return [self _searchBarTextField].font;
+}
+
+- (void)setTextColor:(UIColor *)textColor {
+    [self _searchBarTextField].textColor = textColor;
+}
+
+- (UIColor *)textColor {
+    return [self _searchBarTextField].textColor;
+}
+
+- (void)setTextAlignment:(NSTextAlignment)textAlignment {
+    [self _searchBarTextField].textAlignment = textAlignment;
+}
+
+- (NSTextAlignment)textAlignment {
+    return [self _searchBarTextField].textAlignment;
+}
+
+- (void)setDefaultTextAttributes:(NSDictionary *)defaultTextAttributes {
+    [self _searchBarTextField].defaultTextAttributes = defaultTextAttributes;
+}
+
+- (NSDictionary *)defaultTextAttributes {
+    return [self _searchBarTextField].defaultTextAttributes;
+}
+
+- (void)setPlaceholder:(NSString *)placeholder {
+    super.placeholder = placeholder;
     [self _updatePlaceholderColor];
 }
 
@@ -103,6 +122,19 @@
 
 - (NSAttributedString *)attributedPlaceholder {
     return [self _searchBarTextField].attributedPlaceholder;
+}
+
+- (void)setPlaceholderColor:(UIColor *)placeholderColor {
+    _placeholderColor = placeholderColor;
+    [self _updatePlaceholderColor];
+}
+
+- (void)setTypingAttributes:(NSDictionary *)typingAttributes {
+    [self _searchBarTextField].typingAttributes = typingAttributes;
+}
+
+- (NSDictionary *)typingAttributes {
+    return [self _searchBarTextField].typingAttributes;
 }
 
 - (void)setAdjustsFontSizeToFitWidth:(BOOL)adjustsFontSizeToFitWidth {

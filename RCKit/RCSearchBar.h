@@ -22,10 +22,14 @@
 
 @interface RCSearchBar : UISearchBar
 
-@property (strong, nonatomic) UIColor *textColor;
 @property (copy, nonatomic) NSAttributedString *attributedText;
-@property (strong, nonatomic) UIColor *placeholderColor;
+@property (strong, nonatomic) UIFont *font;
+@property (strong, nonatomic) UIColor *textColor;
+@property (nonatomic) NSTextAlignment textAlignment;
+@property (copy, nonatomic) NSDictionary *defaultTextAttributes;
 @property (copy, nonatomic) NSAttributedString *attributedPlaceholder;
+@property (strong, nonatomic) UIColor *placeholderColor;
+@property (copy, nonatomic) NSDictionary *typingAttributes;
 @property (nonatomic) BOOL adjustsFontSizeToFitWidth;
 @property (nonatomic) CGFloat minimumFontSize;
 @property (nonatomic) UITextFieldViewMode clearButtonMode;
