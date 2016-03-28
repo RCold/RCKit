@@ -33,7 +33,10 @@
     NSMutableDictionary *titleTextAttributes = [self.titleTextAttributes mutableCopy];
     if (titleTextAttributes == nil)
         titleTextAttributes = [NSMutableDictionary dictionary];
-    titleTextAttributes[NSForegroundColorAttributeName] = titleTextColor;
+    if (titleTextColor == nil)
+        [titleTextAttributes removeObjectForKey:NSForegroundColorAttributeName];
+    else
+        titleTextAttributes[NSForegroundColorAttributeName] = titleTextColor;
     self.titleTextAttributes = titleTextAttributes;
 }
 
