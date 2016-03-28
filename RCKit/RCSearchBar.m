@@ -66,7 +66,7 @@
     NSMutableAttributedString *attributedPlaceholder = [searchBarTextField.attributedPlaceholder mutableCopy];
     [attributedPlaceholder addAttribute:NSForegroundColorAttributeName value:_placeholderColor range:NSMakeRange(0, attributedPlaceholder.length)];
     searchBarTextField.attributedPlaceholder = attributedPlaceholder;
-    UIImageView *leftView = (UIImageView *)[self _searchBarTextField].leftView;
+    UIImageView *leftView = (UIImageView *)searchBarTextField.leftView;
     leftView.image = [leftView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     leftView.tintColor = _placeholderColor;
 }
@@ -95,6 +95,10 @@
 - (void)setPlaceholderColor:(UIColor *)placeholderColor {
     _placeholderColor = placeholderColor;
     [self _updatePlaceholderColor];
+}
+
+- (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholder {
+    [self _searchBarTextField].attributedPlaceholder = attributedPlaceholder;
 }
 
 - (NSAttributedString *)attributedPlaceholder {
