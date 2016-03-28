@@ -22,7 +22,6 @@
 
 NS_CLASS_AVAILABLE_IOS(7_0) @interface RCNavigationBar : UINavigationBar
 
-@property (strong, nonatomic) UIColor *titleTextColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic) BOOL hidesShadow UI_APPEARANCE_SELECTOR;
 
 @end

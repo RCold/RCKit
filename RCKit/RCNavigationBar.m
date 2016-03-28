@@ -29,21 +29,6 @@
 
 @implementation RCNavigationBar
 
-- (void)setTitleTextColor:(UIColor *)titleTextColor {
-    NSMutableDictionary *titleTextAttributes = [self.titleTextAttributes mutableCopy];
-    if (titleTextAttributes == nil)
-        titleTextAttributes = [NSMutableDictionary dictionary];
-    if (titleTextColor == nil)
-        [titleTextAttributes removeObjectForKey:NSForegroundColorAttributeName];
-    else
-        titleTextAttributes[NSForegroundColorAttributeName] = titleTextColor;
-    self.titleTextAttributes = titleTextAttributes;
-}
-
-- (UIColor *)titleTextColor {
-    return self.titleTextAttributes[NSForegroundColorAttributeName];
-}
-
 - (void)setHidesShadow:(BOOL)hidesShadow {
     if ([super respondsToSelector:@selector(_setHidesShadow:)])
         [super _setHidesShadow:hidesShadow];
