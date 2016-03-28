@@ -26,7 +26,7 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface RCButtonCollectionView : UIView
 
 @property (weak, nonatomic) id<RCButtonCollectionViewDelegate> delegate;
 @property (copy, nonatomic) NSArray *buttons;
-@property (readonly, nonatomic) NSArray *selectedButtons;
+@property (readonly, copy, nonatomic) NSArray *selectedButtons;
 @property (nonatomic) BOOL allowSelection;
 @property (nonatomic) BOOL allowMultipleSelection;
 @property (nonatomic) CGFloat preferredLayoutWidth;

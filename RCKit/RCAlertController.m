@@ -25,24 +25,28 @@
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self != nil)
-        [self initAlertController];
+        [self _initRCAlertController];
     return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self != nil)
-        [self initAlertController];
+        [self _initRCAlertController];
     return self;
 }
 
-- (void)initAlertController {
+- (void)_initRCAlertController {
     _alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     _alertWindow.windowLevel = UIWindowLevelAlert;
     _dimmingView = [[UIView alloc] initWithFrame:_alertWindow.bounds];
     _dimmingView.backgroundColor = [UIColor blackColor];
     _dimsBackgroundDuringPresentation = YES;
     _presented = NO;
+}
+
+- (void)_dimmingViewDidTap:(UITapGestureRecognizer *)sender {
+    [self dismissAlertAnimated:YES];
 }
 
 - (void)setDimsBackgroundDuringPresentation:(BOOL)dimsBackgroundDuringPresentation {
@@ -66,7 +70,7 @@
     _dimmingView.alpha = 0.0;
     switch (_style) {
         case RCAlertControllerStyleActionSheet:
-            [_dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)]];
+            [_dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dimmingViewDidTap:)]];
             alertView.alpha = 1.0;
             alertView.center = CGPointMake(screenSize.width / 2.0, screenSize.height + alertViewSize.height / 2.0);
             alertView.transform = CGAffineTransformIdentity;
@@ -122,10 +126,6 @@
         _presented = NO;
         [self removeFromParentViewController];
     }];
-}
-
-- (void)dismiss {
-    [self dismissAlertAnimated:YES];
 }
 
 @end

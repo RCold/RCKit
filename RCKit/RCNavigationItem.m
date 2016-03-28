@@ -20,7 +20,7 @@
 
 #import "RCNavigationItem.h"
 
-@interface UINavigationItem ()
+@interface UINavigationItem (RCNavigationItem)
 
 - (void)setBackButtonTitle:(NSString *)backButtonTitle;
 - (NSString *)backButtonTitle;
@@ -32,18 +32,18 @@
 - (instancetype)initWithTitle:(NSString *)title {
     self = [super initWithTitle:title];
     if (self != nil)
-        [self initNavigationItem];
+        [self _initRCNavigationItem];
     return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder {
     self = [super initWithCoder:coder];
     if (self)
-        [self initNavigationItem];
+        [self _initRCNavigationItem];
     return self;
 }
 
-- (void)initNavigationItem {
+- (void)_initRCNavigationItem {
     self.backButtonTitle = [NSString string];
 }
 

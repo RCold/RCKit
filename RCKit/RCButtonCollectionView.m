@@ -25,24 +25,39 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self != nil)
-        [self initButtonCollectionView];
+        [self _initRCButtonCollectionView];
     return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self != nil)
-        [self initButtonCollectionView];
+        [self _initRCButtonCollectionView];
     return self;
 }
 
-- (void)initButtonCollectionView {
+- (void)_initRCButtonCollectionView {
     _allowSelection = YES;
     _allowMultipleSelection = NO;
     _edgeInsets = UIEdgeInsetsZero;
     _interitemSpacing = 8.0;
     _lineSpacing = 8.0;
     _preferredLayoutWidth = 0.0;
+}
+
+- (void)_buttonDidTouch:(UIButton *)sender {
+    if (!_allowSelection)
+        return;
+    if (!_allowMultipleSelection)
+        [self deselectAllButtons];
+    sender.selected = !sender.selected;
+    if (sender.selected) {
+        if ([_delegate respondsToSelector:@selector(buttonCollectionView:didSelectedButtonAtIndex:)])
+            [_delegate buttonCollectionView:self didSelectedButtonAtIndex:[_buttons indexOfObject:sender]];
+    } else {
+        if ([_delegate respondsToSelector:@selector(buttonCollectionView:didDeselectedButtonAtIndex:)])
+            [_delegate buttonCollectionView:self didDeselectedButtonAtIndex:[_buttons indexOfObject:sender]];
+    }
 }
 
 - (void)setAllowSelection:(BOOL)allowSelection {
@@ -60,7 +75,7 @@
 - (void)setButtons:(NSArray *)buttons {
     _buttons = [buttons copy];
     for (UIButton *button in buttons) {
-        [button addTarget:self action:@selector(buttonDidTouch:) forControlEvents:UIControlEventTouchUpInside];
+        [button addTarget:self action:@selector(_buttonDidTouch:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:button];
     }
     [self setNeedsLayout];
@@ -118,21 +133,6 @@
 - (void)deselectAllButtons {
     for (UIButton *button in _buttons)
         button.selected = NO;
-}
-
-- (void)buttonDidTouch:(UIButton *)button {
-    if (!_allowSelection)
-        return;
-    if (!_allowMultipleSelection)
-        [self deselectAllButtons];
-    button.selected = !button.selected;
-    if (button.selected) {
-        if ([_delegate respondsToSelector:@selector(buttonCollectionView:didSelectedButtonAtIndex:)])
-            [_delegate buttonCollectionView:self didSelectedButtonAtIndex:[_buttons indexOfObject:button]];
-    } else {
-        if ([_delegate respondsToSelector:@selector(buttonCollectionView:didDeselectedButtonAtIndex:)])
-            [_delegate buttonCollectionView:self didDeselectedButtonAtIndex:[_buttons indexOfObject:button]];
-    }
 }
 
 - (void)layoutSubviews {

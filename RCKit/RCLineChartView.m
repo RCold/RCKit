@@ -25,18 +25,18 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self != nil)
-        [self initLineChartView];
+        [self _initRCLineChartView];
     return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self != nil)
-        [self initLineChartView];
+        [self _initRCLineChartView];
     return self;
 }
 
-- (void)initLineChartView {
+- (void)_initRCLineChartView {
     _dataSource = nil;
     _displayIndexLabel = YES;
     _indexLabelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:10];
@@ -74,6 +74,248 @@
     [self reloadData];
 }
 
+- (CGFloat)_valueForValueLabelAtIndex:(NSUInteger)index {
+    NSUInteger numberOfValueScales = [_dataSource numberOfValueScalesInLineChartView:self];
+    if (numberOfValueScales < 1)
+        numberOfValueScales = 1;
+    return _minValue + (_maxValue - _minValue) / numberOfValueScales * (index + 1);
+}
+
+- (CGPoint)_pointForValue:(CGFloat)value atIndex:(NSUInteger)index {
+    CGSize size = self.bounds.size;
+    CGFloat chartWidth = size.width - _chartMarginLeading - _chartMarginTrailing;
+    CGFloat chartHeight = size.height - _chartMarginTop - _chartMarginButtom;
+    CGPoint point = CGPointMake(_chartMarginLeading, size.height - _chartMarginButtom);
+    NSUInteger numberOfIndexScales = [_dataSource numberOfIndexScalesInLineChartView:self];
+    if (numberOfIndexScales < 2)
+        numberOfIndexScales = 2;
+    point.x += chartWidth / (numberOfIndexScales - 1) * index;
+    point.y -= chartHeight / (_maxValue - _minValue) * (value - _minValue);
+    return point;
+}
+
+- (CGPoint)_pointForValue:(CGFloat)value atDataPointIndex:(NSUInteger)index {
+    CGSize size = self.bounds.size;
+    CGFloat chartWidth = size.width - _chartMarginLeading - _chartMarginTrailing;
+    CGFloat chartHeight = size.height - _chartMarginTop - _chartMarginButtom;
+    CGPoint point = CGPointMake(_chartMarginLeading, size.height - _chartMarginButtom);
+    NSUInteger numberOfDataPoints = 2;
+    if ([_dataSource respondsToSelector:@selector(numberOfDataPointsInLineChartView:)])
+        numberOfDataPoints = [_dataSource numberOfDataPointsInLineChartView:self];
+    if (numberOfDataPoints < 2)
+        numberOfDataPoints = 2;
+    point.x += chartWidth / (numberOfDataPoints - 1) * index;
+    point.y -= chartHeight / (_maxValue - _minValue) * (value - _minValue);
+    return point;
+}
+
+- (CGFloat)_roundValueForValue:(CGFloat)value {
+    return value;
+}
+
+- (UIBezierPath *)_linePathWithSmoothing:(BOOL)smoothed closing:(BOOL)closed {
+    NSUInteger numberOfDataPoints = [_dataSource numberOfDataPointsInLineChartView:self];
+    UIBezierPath *bezierPath = [UIBezierPath bezierPath];
+    if (numberOfDataPoints < 2)
+        return bezierPath;
+    CGFloat value = [_dataSource lineChartView:self valueAtIndex:0];
+    CGPoint point = [self _pointForValue:value atDataPointIndex:0];
+    [bezierPath moveToPoint:point];
+    if(!smoothed)
+        for (int i = 1; i < numberOfDataPoints; i++)
+            [bezierPath addLineToPoint:[self _pointForValue:[_dataSource lineChartView:self valueAtIndex:i] atDataPointIndex:i]];
+    else {
+        if (numberOfDataPoints == 2)
+            [bezierPath addLineToPoint:[self _pointForValue:[_dataSource lineChartView:self valueAtIndex:1] atDataPointIndex:1]];
+        if (numberOfDataPoints > 2) {
+            CGPoint controlPoint;
+            CGFloat previousValue = [_dataSource lineChartView:self valueAtIndex:0];
+            CGFloat value = [_dataSource lineChartView:self valueAtIndex:1];
+            CGFloat nextValue = [_dataSource lineChartView:self valueAtIndex:2];
+            CGPoint previousPoint = [self _pointForValue:previousValue atDataPointIndex:0];
+            CGPoint point = [self _pointForValue:value atDataPointIndex:1];
+            CGPoint nextPoint = [self _pointForValue:nextValue atDataPointIndex:2];
+            CGVector gradient = CGVectorMake(nextPoint.x - previousPoint.x, nextPoint.y - previousPoint.y);
+            controlPoint.x = point.x - gradient.dx / 2.0 * _bezierSmoothingTension;
+            controlPoint.y = point.y - gradient.dy / 2.0 * _bezierSmoothingTension;
+            [bezierPath addQuadCurveToPoint:point controlPoint:controlPoint];
+        }
+        for (int i = 2; i < numberOfDataPoints - 1; i++) {
+            CGPoint controlPoint[2];
+            CGFloat previusValue = [_dataSource lineChartView:self valueAtIndex:i - 2];
+            CGFloat value = [_dataSource lineChartView:self valueAtIndex:i - 1];
+            CGFloat nextValue = [_dataSource lineChartView:self valueAtIndex:i];
+            CGPoint previousPoint = [self _pointForValue:previusValue atDataPointIndex:i - 2];
+            CGPoint point = [self _pointForValue:value atDataPointIndex:i - 1];
+            CGPoint nextPoint = [self _pointForValue:nextValue atDataPointIndex:i];
+            CGVector gradient = CGVectorMake(nextPoint.x - previousPoint.x, nextPoint.y - previousPoint.y);
+            controlPoint[0].x = point.x + gradient.dx / 2.0 * _bezierSmoothingTension;
+            controlPoint[0].y = point.y + gradient.dy / 2.0 * _bezierSmoothingTension;
+            previusValue = value;
+            value = nextValue;
+            nextValue = [_dataSource lineChartView:self valueAtIndex:i + 1];
+            previousPoint = point;
+            point = nextPoint;
+            nextPoint = [self _pointForValue:nextValue atDataPointIndex:i + 1];
+            gradient = CGVectorMake(nextPoint.x - previousPoint.x, nextPoint.y - previousPoint.y);
+            controlPoint[1].x = point.x - gradient.dx / 2.0 * _bezierSmoothingTension;
+            controlPoint[1].y = point.y - gradient.dy / 2.0 * _bezierSmoothingTension;
+            [bezierPath addCurveToPoint:point controlPoint1:controlPoint[0] controlPoint2:controlPoint[1]];
+        }
+        if (numberOfDataPoints > 2) {
+            CGPoint controlPoint;
+            CGFloat previusValue = [_dataSource lineChartView:self valueAtIndex:numberOfDataPoints - 3];
+            CGFloat value = [_dataSource lineChartView:self valueAtIndex:numberOfDataPoints - 2];
+            CGFloat nextValue = [_dataSource lineChartView:self valueAtIndex:numberOfDataPoints - 1];
+            CGPoint previousPoint = [self _pointForValue:previusValue atDataPointIndex:numberOfDataPoints - 3];
+            CGPoint point = [self _pointForValue:value atDataPointIndex:numberOfDataPoints - 2];
+            CGPoint nextPoint = [self _pointForValue:nextValue atDataPointIndex:numberOfDataPoints - 1];
+            CGVector gradient = CGVectorMake(nextPoint.x - previousPoint.x, nextPoint.y - previousPoint.y);
+            controlPoint.x = point.x + gradient.dx / 2.0 * _bezierSmoothingTension;
+            controlPoint.y = point.y + gradient.dy / 2.0 * _bezierSmoothingTension;
+            [bezierPath addQuadCurveToPoint:nextPoint controlPoint:controlPoint];
+        }
+    }
+    if(closed) {
+        [bezierPath addLineToPoint:[self _pointForValue:_minValue atDataPointIndex:numberOfDataPoints - 1]];
+        [bezierPath addLineToPoint:[self _pointForValue:_minValue atIndex:0]];
+        [bezierPath closePath];
+    }
+    return bezierPath;
+}
+
+- (void)_updateMinMaxValue {
+    NSUInteger numberOfDataPoints = [_dataSource numberOfDataPointsInLineChartView:self];
+    NSUInteger numberOfValueScales = [_dataSource numberOfValueScalesInLineChartView:self];
+    if (numberOfValueScales < 1)
+        numberOfValueScales = 1;
+    _maxValue = 0.0;
+    _minValue = 0.0;
+    if (numberOfDataPoints > 0) {
+        _maxValue = -CGFLOAT_MAX;
+        _minValue = CGFLOAT_MAX;
+        for (int i = 0; i < numberOfDataPoints; i++) {
+            CGFloat value = [_dataSource lineChartView:self valueAtIndex:i];
+            if (_maxValue < value)
+                _maxValue = value;
+            if (_minValue > value)
+                _minValue = value;
+        }
+    }
+    if ([_dataSource respondsToSelector:@selector(maxValueInLineChartView:)])
+        _maxValue = [_dataSource maxValueInLineChartView:self];
+    if ([_dataSource respondsToSelector:@selector(minValueInLineChartView:)])
+        _minValue = [_dataSource minValueInLineChartView:self];
+    if (_maxValue < _minValue + numberOfValueScales * _minValueScaleStep)
+        _maxValue = _minValue + numberOfValueScales * _minValueScaleStep;
+    _maxValue = [self _roundValueForValue:_maxValue];
+    _minValue = [self _roundValueForValue:_minValue];
+    [self setNeedsLayout];
+}
+
+- (void)_updateSubviews {
+    [self _updateIndexLabels];
+    [self _updateValueLabels];
+    [self _updateDataLabels];
+}
+
+- (void)_updateIndexLabels {
+    [_indexLabels makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    _indexLabels = nil;
+    NSUInteger numberOfIndexLabels = 0;
+    if (_displayIndexLabel) {
+        numberOfIndexLabels = [_dataSource numberOfIndexScalesInLineChartView:self];
+        _indexLabels = [NSMutableArray arrayWithCapacity:numberOfIndexLabels];
+    }
+    for (int i = 0; i < numberOfIndexLabels; i++) {
+        UILabel *label;
+        if ([_dataSource respondsToSelector:@selector(lineChartView:labelForIndexLabelAtIndex:)])
+            label = [_dataSource lineChartView:self labelForIndexLabelAtIndex:i];
+        else {
+            label = [[UILabel alloc] initWithFrame:CGRectZero];
+            if ([_dataSource respondsToSelector:@selector(lineChartView:titleForIndexLabelAtIndex:)])
+                label.text = [_dataSource lineChartView:self titleForIndexLabelAtIndex:i];
+            else
+                label.text = [NSString stringWithFormat:@"%d", i];
+            label.font = _indexLabelFont;
+            label.textColor = _indexLabelTextColor;
+            label.backgroundColor = _indexLabelBackgroundColor;
+        }
+        label.tag = i;
+        [_indexLabels addObject:label];
+        [self addSubview:label];
+    }
+    [self setNeedsLayout];
+}
+
+- (void)_updateValueLabels {
+    [_valueLabels makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    _valueLabels = nil;
+    NSUInteger numberOfValueLabels = 0;
+    if (_displayValueLabel) {
+        numberOfValueLabels = [_dataSource numberOfValueScalesInLineChartView:self];
+        _valueLabels = [NSMutableArray arrayWithCapacity:numberOfValueLabels];
+    }
+    for (int i = 0; i < numberOfValueLabels; i++) {
+        UILabel *label;
+        if ([_dataSource respondsToSelector:@selector(lineChartView:labelForValueLabelAtIndex:)])
+            label = [_dataSource lineChartView:self labelForValueLabelAtIndex:i];
+        else if ([_dataSource respondsToSelector:@selector(lineChartView:labelForValueLabelAtValue:)])
+            label = [_dataSource lineChartView:self labelForValueLabelAtValue:[self _valueForValueLabelAtIndex:i]];
+        else {
+            label = [[UILabel alloc] initWithFrame:CGRectZero];
+            if ([_dataSource respondsToSelector:@selector(lineChartView:titleForValueLabelAtIndex:)])
+                label.text = [_dataSource lineChartView:self titleForValueLabelAtIndex:i];
+            else if ([_dataSource respondsToSelector:@selector(lineChartView:titleForValueLabelAtValue:)])
+                label.text = [_dataSource lineChartView:self titleForValueLabelAtValue:[self _valueForValueLabelAtIndex:i]];
+            else
+                label.text = [NSString stringWithFormat:@"%.0f", [self _valueForValueLabelAtIndex:i]];
+            label.font = _valueLabelFont;
+            label.textColor = _valueLabelTextColor;
+            label.backgroundColor = _valueLabelBackgroundColor;
+        }
+        label.tag = i;
+        [_valueLabels addObject:label];
+        [self addSubview:label];
+    }
+    [self setNeedsLayout];
+}
+
+- (void)_updateDataLabels {
+    [_dataLabels makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    _dataLabels = nil;
+    NSUInteger numberOfDataLabels = 0;
+    if (_displayDataLabel) {
+        numberOfDataLabels = [_dataSource numberOfDataPointsInLineChartView:self];
+        _dataLabels = [NSMutableArray arrayWithCapacity:numberOfDataLabels];
+    }
+    for (int i = 0; i < numberOfDataLabels; i++) {
+        UILabel *label;
+        if ([_dataSource respondsToSelector:@selector(lineChartView:labelForDataLabelAtIndex:)])
+            label = [_dataSource lineChartView:self labelForDataLabelAtIndex:i];
+        else if ([_dataSource respondsToSelector:@selector(lineChartView:labelForDataLabelAtValue:)])
+            label = [_dataSource lineChartView:self labelForDataLabelAtValue:[_dataSource lineChartView:self valueAtIndex:i]];
+        else {
+            label = [[UILabel alloc] initWithFrame:CGRectZero];
+            if ([_dataSource respondsToSelector:@selector(lineChartView:titleForDataLabelAtIndex:)])
+                label.text = [_dataSource lineChartView:self titleForDataLabelAtIndex:i];
+            else if ([_dataSource respondsToSelector:@selector(lineChartView:titleForDataLabelAtValue:)])
+                label.text = [_dataSource lineChartView:self titleForDataLabelAtValue:[_dataSource lineChartView:self valueAtIndex:i]];
+            else if ([_dataSource respondsToSelector:@selector(lineChartView:titleForValueLabelAtValue:)])
+                label.text = [_dataSource lineChartView:self titleForValueLabelAtValue:[_dataSource lineChartView:self valueAtIndex:i]];
+            else
+                label.text = [NSString stringWithFormat:@"%.0f", [self _valueForValueLabelAtIndex:i]];
+            label.font = _dataLabelFont;
+            label.textColor = _dataLabelTextColor;
+            label.backgroundColor = _dataLabelBackgroundColor;
+        }
+        label.tag = i;
+        [_dataLabels addObject:label];
+        [self addSubview:label];
+    }
+    [self setNeedsLayout];
+}
+
 - (void)setDataSource:(id<RCLineChartViewDataSource>)dataSource {
     _dataSource = dataSource;
     [self reloadData];
@@ -81,61 +323,61 @@
 
 - (void)setDisplayIndexLabel:(BOOL)displayIndexLabel {
     _displayIndexLabel = displayIndexLabel;
-    [self updateIndexLabels];
+    [self _updateIndexLabels];
 }
 
 - (void)setIndexLabelFont:(UIFont *)indexLabelFont {
     if (indexLabelFont == nil)
         return;
     _indexLabelFont = indexLabelFont;
-    [self updateIndexLabels];
+    [self _updateIndexLabels];
 }
 
 - (void)setIndexLabelTextColor:(UIColor *)indexLabelTextColor {
     if (indexLabelTextColor == nil)
         return;
     _indexLabelTextColor = indexLabelTextColor;
-    [self updateIndexLabels];
+    [self _updateIndexLabels];
 }
 
 - (void)setIndexLabelBackgroundColor:(UIColor *)indexLabelBackgroundColor {
     if (indexLabelBackgroundColor == nil)
         return;
     _indexLabelBackgroundColor = indexLabelBackgroundColor;
-    [self updateIndexLabels];
+    [self _updateIndexLabels];
 }
 
 - (void)setDisplayValueLabel:(BOOL)displayValueLabel {
     _displayValueLabel = displayValueLabel;
-    [self updateValueLabels];
+    [self _updateValueLabels];
 }
 
 - (void)setMinValueScaleStep:(CGFloat)minValueScaleStep {
     if (minValueScaleStep <= 0.0)
         return;
     _minValueScaleStep = minValueScaleStep;
-    [self updateMinMaxValue];
+    [self _updateMinMaxValue];
 }
 
 - (void)setValueLabelFont:(UIFont *)valueLabelFont {
     if (valueLabelFont == nil)
         return;
     _valueLabelFont = valueLabelFont;
-    [self updateValueLabels];
+    [self _updateValueLabels];
 }
 
 - (void)setValueLabelTextColor:(UIColor *)valueLabelTextColor {
     if (valueLabelTextColor == nil)
         return;
     _valueLabelTextColor = valueLabelTextColor;
-    [self updateValueLabels];
+    [self _updateValueLabels];
 }
 
 - (void)setValueLabelBackgroundColor:(UIColor *)valueLabelBackgroundColor {
     if (valueLabelBackgroundColor == nil)
         return;
     _valueLabelBackgroundColor = valueLabelBackgroundColor;
-    [self updateValueLabels];
+    [self _updateValueLabels];
 }
 
 - (void)setMargin:(CGFloat)margin {
@@ -249,28 +491,28 @@
 
 - (void)setDisplayDataLabel:(BOOL)displayDataLabel {
     _displayDataLabel = displayDataLabel;
-    [self updateDataLabels];
+    [self _updateDataLabels];
 }
 
 - (void)setDataLabelFont:(UIFont *)dataLabelFont {
     if (dataLabelFont == nil)
         return;
     _dataLabelFont = dataLabelFont;
-    [self updateDataLabels];
+    [self _updateDataLabels];
 }
 
 - (void)setDataLabelTextColor:(UIColor *)dataLabelTextColor {
     if (dataLabelTextColor == nil)
         return;
     _dataLabelTextColor = dataLabelTextColor;
-    [self updateDataLabels];
+    [self _updateDataLabels];
 }
 
 - (void)setDataLabelBackgroundColor:(UIColor *)dataLabelBackgroundColor {
     if (dataLabelBackgroundColor == nil)
         return;
     _dataLabelBackgroundColor = dataLabelBackgroundColor;
-    [self updateDataLabels];
+    [self _updateDataLabels];
 }
 
 - (void)setBezierSmoothing:(BOOL)bezierSmoothing {
@@ -309,180 +551,9 @@
     return _dataLabels[index];
 }
 
-- (CGFloat)roundValueForValue:(CGFloat)value {
-    return value;
-}
-
-- (CGFloat)valueForValueLabelAtIndex:(NSUInteger)index {
-    NSUInteger numberOfValueScales = [_dataSource numberOfValueScalesInLineChartView:self];
-    if (numberOfValueScales < 1)
-        numberOfValueScales = 1;
-    return _minValue + (_maxValue - _minValue) / numberOfValueScales * (index + 1);
-}
-
-- (CGPoint)pointForValue:(CGFloat)value atIndex:(NSUInteger)index {
-    CGSize size = self.bounds.size;
-    CGFloat chartWidth = size.width - _chartMarginLeading - _chartMarginTrailing;
-    CGFloat chartHeight = size.height - _chartMarginTop - _chartMarginButtom;
-    CGPoint point = CGPointMake(_chartMarginLeading, size.height - _chartMarginButtom);
-    NSUInteger numberOfIndexScales = [_dataSource numberOfIndexScalesInLineChartView:self];
-    if (numberOfIndexScales < 2)
-        numberOfIndexScales = 2;
-    point.x += chartWidth / (numberOfIndexScales - 1) * index;
-    point.y -= chartHeight / (_maxValue - _minValue) * (value - _minValue);
-    return point;
-}
-
-- (CGPoint)pointForValue:(CGFloat)value atDataPointIndex:(NSUInteger)index {
-    CGSize size = self.bounds.size;
-    CGFloat chartWidth = size.width - _chartMarginLeading - _chartMarginTrailing;
-    CGFloat chartHeight = size.height - _chartMarginTop - _chartMarginButtom;
-    CGPoint point = CGPointMake(_chartMarginLeading, size.height - _chartMarginButtom);
-    NSUInteger numberOfDataPoints = 2;
-    if ([_dataSource respondsToSelector:@selector(numberOfDataPointsInLineChartView:)])
-        numberOfDataPoints = [_dataSource numberOfDataPointsInLineChartView:self];
-    if (numberOfDataPoints < 2)
-        numberOfDataPoints = 2;
-    point.x += chartWidth / (numberOfDataPoints - 1) * index;
-    point.y -= chartHeight / (_maxValue - _minValue) * (value - _minValue);
-    return point;
-}
-
 - (void)reloadData {
-    [self updateMinMaxValue];
-    [self updateSubviews];
-}
-
-- (void)updateMinMaxValue {
-    NSUInteger numberOfDataPoints = [_dataSource numberOfDataPointsInLineChartView:self];
-    NSUInteger numberOfValueScales = [_dataSource numberOfValueScalesInLineChartView:self];
-    if (numberOfValueScales < 1)
-        numberOfValueScales = 1;
-    _maxValue = 0.0;
-    _minValue = 0.0;
-    if (numberOfDataPoints > 0) {
-        _maxValue = -CGFLOAT_MAX;
-        _minValue = CGFLOAT_MAX;
-        for (int i = 0; i < numberOfDataPoints; i++) {
-            CGFloat value = [_dataSource lineChartView:self valueAtIndex:i];
-            if (_maxValue < value)
-                _maxValue = value;
-            if (_minValue > value)
-                _minValue = value;
-        }
-    }
-    if ([_dataSource respondsToSelector:@selector(maxValueInLineChartView:)])
-        _maxValue = [_dataSource maxValueInLineChartView:self];
-    if ([_dataSource respondsToSelector:@selector(minValueInLineChartView:)])
-        _minValue = [_dataSource minValueInLineChartView:self];
-    if (_maxValue < _minValue + numberOfValueScales * _minValueScaleStep)
-        _maxValue = _minValue + numberOfValueScales * _minValueScaleStep;
-    _maxValue = [self roundValueForValue:_maxValue];
-    _minValue = [self roundValueForValue:_minValue];
-    [self setNeedsLayout];
-}
-
-- (void)updateSubviews {
-    [self updateIndexLabels];
-    [self updateValueLabels];
-    [self updateDataLabels];
-}
-
-- (void)updateIndexLabels {
-    [_indexLabels makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    _indexLabels = nil;
-    NSUInteger numberOfIndexLabels = 0;
-    if (_displayIndexLabel) {
-        numberOfIndexLabels = [_dataSource numberOfIndexScalesInLineChartView:self];
-        _indexLabels = [NSMutableArray arrayWithCapacity:numberOfIndexLabels];
-    }
-    for (int i = 0; i < numberOfIndexLabels; i++) {
-        UILabel *label;
-        if ([_dataSource respondsToSelector:@selector(lineChartView:labelForIndexLabelAtIndex:)])
-            label = [_dataSource lineChartView:self labelForIndexLabelAtIndex:i];
-        else {
-            label = [[UILabel alloc] initWithFrame:CGRectZero];
-            if ([_dataSource respondsToSelector:@selector(lineChartView:titleForIndexLabelAtIndex:)])
-                label.text = [_dataSource lineChartView:self titleForIndexLabelAtIndex:i];
-            else
-                label.text = [NSString stringWithFormat:@"%d", i];
-            label.font = _indexLabelFont;
-            label.textColor = _indexLabelTextColor;
-            label.backgroundColor = _indexLabelBackgroundColor;
-        }
-        label.tag = i;
-        [_indexLabels addObject:label];
-        [self addSubview:label];
-    }
-    [self setNeedsLayout];
-}
-
-- (void)updateValueLabels {
-    [_valueLabels makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    _valueLabels = nil;
-    NSUInteger numberOfValueLabels = 0;
-    if (_displayValueLabel) {
-        numberOfValueLabels = [_dataSource numberOfValueScalesInLineChartView:self];
-        _valueLabels = [NSMutableArray arrayWithCapacity:numberOfValueLabels];
-    }
-    for (int i = 0; i < numberOfValueLabels; i++) {
-        UILabel *label;
-        if ([_dataSource respondsToSelector:@selector(lineChartView:labelForValueLabelAtIndex:)])
-            label = [_dataSource lineChartView:self labelForValueLabelAtIndex:i];
-        else if ([_dataSource respondsToSelector:@selector(lineChartView:labelForValueLabelAtValue:)])
-            label = [_dataSource lineChartView:self labelForValueLabelAtValue:[self valueForValueLabelAtIndex:i]];
-        else {
-            label = [[UILabel alloc] initWithFrame:CGRectZero];
-            if ([_dataSource respondsToSelector:@selector(lineChartView:titleForValueLabelAtIndex:)])
-                label.text = [_dataSource lineChartView:self titleForValueLabelAtIndex:i];
-            else if ([_dataSource respondsToSelector:@selector(lineChartView:titleForValueLabelAtValue:)])
-                label.text = [_dataSource lineChartView:self titleForValueLabelAtValue:[self valueForValueLabelAtIndex:i]];
-            else
-                label.text = [NSString stringWithFormat:@"%.0f", [self valueForValueLabelAtIndex:i]];
-            label.font = _valueLabelFont;
-            label.textColor = _valueLabelTextColor;
-            label.backgroundColor = _valueLabelBackgroundColor;
-        }
-        label.tag = i;
-        [_valueLabels addObject:label];
-        [self addSubview:label];
-    }
-    [self setNeedsLayout];
-}
-
-- (void)updateDataLabels {
-    [_dataLabels makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    _dataLabels = nil;
-    NSUInteger numberOfDataLabels = 0;
-    if (_displayDataLabel) {
-        numberOfDataLabels = [_dataSource numberOfDataPointsInLineChartView:self];
-        _dataLabels = [NSMutableArray arrayWithCapacity:numberOfDataLabels];
-    }
-    for (int i = 0; i < numberOfDataLabels; i++) {
-        UILabel *label;
-        if ([_dataSource respondsToSelector:@selector(lineChartView:labelForDataLabelAtIndex:)])
-            label = [_dataSource lineChartView:self labelForDataLabelAtIndex:i];
-        else if ([_dataSource respondsToSelector:@selector(lineChartView:labelForDataLabelAtValue:)])
-            label = [_dataSource lineChartView:self labelForDataLabelAtValue:[_dataSource lineChartView:self valueAtIndex:i]];
-        else {
-            label = [[UILabel alloc] initWithFrame:CGRectZero];
-            if ([_dataSource respondsToSelector:@selector(lineChartView:titleForDataLabelAtIndex:)])
-                label.text = [_dataSource lineChartView:self titleForDataLabelAtIndex:i];
-            else if ([_dataSource respondsToSelector:@selector(lineChartView:titleForDataLabelAtValue:)])
-                label.text = [_dataSource lineChartView:self titleForDataLabelAtValue:[_dataSource lineChartView:self valueAtIndex:i]];
-            else if ([_dataSource respondsToSelector:@selector(lineChartView:titleForValueLabelAtValue:)])
-                label.text = [_dataSource lineChartView:self titleForValueLabelAtValue:[_dataSource lineChartView:self valueAtIndex:i]];
-            else
-                label.text = [NSString stringWithFormat:@"%.0f", [self valueForValueLabelAtIndex:i]];
-            label.font = _dataLabelFont;
-            label.textColor = _dataLabelTextColor;
-            label.backgroundColor = _dataLabelBackgroundColor;
-        }
-        label.tag = i;
-        [_dataLabels addObject:label];
-        [self addSubview:label];
-    }
-    [self setNeedsLayout];
+    [self _updateMinMaxValue];
+    [self _updateSubviews];
 }
 
 - (void)layoutSubviews {
@@ -515,13 +586,13 @@
     _chartMarginTrailing = _margin + MAX(lastDataLabelWidth, lastIndexLabelWidth / 2.0);
     for (UILabel *label in _indexLabels) {
         NSInteger i = label.tag;
-        CGPoint center = [self pointForValue:_minValue atIndex:i];
+        CGPoint center = [self _pointForValue:_minValue atIndex:i];
         center.y += label.frame.size.height / 2.0 + 4.0;
         label.center = center;
     }
     for (UILabel *label in _valueLabels) {
         NSInteger i = label.tag;
-        CGPoint center = [self pointForValue:[self valueForValueLabelAtIndex:i] atIndex:0];
+        CGPoint center = [self _pointForValue:[self _valueForValueLabelAtIndex:i] atIndex:0];
         center.x -= label.frame.size.width / 2.0 + 4.0;
         label.center = center;
     }
@@ -534,7 +605,7 @@
             previousValue = [_dataSource lineChartView:self valueAtIndex:i - 1];
         if (i + 1 < numberOfDataPoints)
             nextValue = [_dataSource lineChartView:self valueAtIndex:i + 1];
-        CGPoint center = [self pointForValue:[_dataSource lineChartView:self valueAtIndex:i] atDataPointIndex:i];
+        CGPoint center = [self _pointForValue:[_dataSource lineChartView:self valueAtIndex:i] atDataPointIndex:i];
         center.x += label.frame.size.width / 2.0 + 4.0;
         if (nextValue > value || (nextValue == value && previousValue < value))
             center.y += label.frame.size.height / 2.0 + 4.0;
@@ -543,77 +614,6 @@
         label.center = center;
     }
     [self setNeedsDisplay];
-}
-
-- (UIBezierPath *)linePathWithSmoothing:(BOOL)smoothed closing:(BOOL)closed {
-    NSUInteger numberOfDataPoints = [_dataSource numberOfDataPointsInLineChartView:self];
-    UIBezierPath *bezierPath = [UIBezierPath bezierPath];
-    if (numberOfDataPoints < 2)
-        return bezierPath;
-    CGFloat value = [_dataSource lineChartView:self valueAtIndex:0];
-    CGPoint point = [self pointForValue:value atDataPointIndex:0];
-    [bezierPath moveToPoint:point];
-    if(!smoothed)
-        for (int i = 1; i < numberOfDataPoints; i++)
-            [bezierPath addLineToPoint:[self pointForValue:[_dataSource lineChartView:self valueAtIndex:i] atDataPointIndex:i]];
-    else {
-        if (numberOfDataPoints == 2)
-            [bezierPath addLineToPoint:[self pointForValue:[_dataSource lineChartView:self valueAtIndex:1] atDataPointIndex:1]];
-        if (numberOfDataPoints > 2) {
-            CGPoint controlPoint;
-            CGFloat previousValue = [_dataSource lineChartView:self valueAtIndex:0];
-            CGFloat value = [_dataSource lineChartView:self valueAtIndex:1];
-            CGFloat nextValue = [_dataSource lineChartView:self valueAtIndex:2];
-            CGPoint previousPoint = [self pointForValue:previousValue atDataPointIndex:0];
-            CGPoint point = [self pointForValue:value atDataPointIndex:1];
-            CGPoint nextPoint = [self pointForValue:nextValue atDataPointIndex:2];
-            CGVector gradient = CGVectorMake(nextPoint.x - previousPoint.x, nextPoint.y - previousPoint.y);
-            controlPoint.x = point.x - gradient.dx / 2.0 * _bezierSmoothingTension;
-            controlPoint.y = point.y - gradient.dy / 2.0 * _bezierSmoothingTension;
-            [bezierPath addQuadCurveToPoint:point controlPoint:controlPoint];
-        }
-        for (int i = 2; i < numberOfDataPoints - 1; i++) {
-            CGPoint controlPoint[2];
-            CGFloat previusValue = [_dataSource lineChartView:self valueAtIndex:i - 2];
-            CGFloat value = [_dataSource lineChartView:self valueAtIndex:i - 1];
-            CGFloat nextValue = [_dataSource lineChartView:self valueAtIndex:i];
-            CGPoint previousPoint = [self pointForValue:previusValue atDataPointIndex:i - 2];
-            CGPoint point = [self pointForValue:value atDataPointIndex:i - 1];
-            CGPoint nextPoint = [self pointForValue:nextValue atDataPointIndex:i];
-            CGVector gradient = CGVectorMake(nextPoint.x - previousPoint.x, nextPoint.y - previousPoint.y);
-            controlPoint[0].x = point.x + gradient.dx / 2.0 * _bezierSmoothingTension;
-            controlPoint[0].y = point.y + gradient.dy / 2.0 * _bezierSmoothingTension;
-            previusValue = value;
-            value = nextValue;
-            nextValue = [_dataSource lineChartView:self valueAtIndex:i + 1];
-            previousPoint = point;
-            point = nextPoint;
-            nextPoint = [self pointForValue:nextValue atDataPointIndex:i + 1];
-            gradient = CGVectorMake(nextPoint.x - previousPoint.x, nextPoint.y - previousPoint.y);
-            controlPoint[1].x = point.x - gradient.dx / 2.0 * _bezierSmoothingTension;
-            controlPoint[1].y = point.y - gradient.dy / 2.0 * _bezierSmoothingTension;
-            [bezierPath addCurveToPoint:point controlPoint1:controlPoint[0] controlPoint2:controlPoint[1]];
-        }
-        if (numberOfDataPoints > 2) {
-            CGPoint controlPoint;
-            CGFloat previusValue = [_dataSource lineChartView:self valueAtIndex:numberOfDataPoints - 3];
-            CGFloat value = [_dataSource lineChartView:self valueAtIndex:numberOfDataPoints - 2];
-            CGFloat nextValue = [_dataSource lineChartView:self valueAtIndex:numberOfDataPoints - 1];
-            CGPoint previousPoint = [self pointForValue:previusValue atDataPointIndex:numberOfDataPoints - 3];
-            CGPoint point = [self pointForValue:value atDataPointIndex:numberOfDataPoints - 2];
-            CGPoint nextPoint = [self pointForValue:nextValue atDataPointIndex:numberOfDataPoints - 1];
-            CGVector gradient = CGVectorMake(nextPoint.x - previousPoint.x, nextPoint.y - previousPoint.y);
-            controlPoint.x = point.x + gradient.dx / 2.0 * _bezierSmoothingTension;
-            controlPoint.y = point.y + gradient.dy / 2.0 * _bezierSmoothingTension;
-            [bezierPath addQuadCurveToPoint:nextPoint controlPoint:controlPoint];
-        }
-    }
-    if(closed) {
-        [bezierPath addLineToPoint:[self pointForValue:_minValue atDataPointIndex:numberOfDataPoints - 1]];
-        [bezierPath addLineToPoint:[self pointForValue:_minValue atIndex:0]];
-        [bezierPath closePath];
-    }
-    return bezierPath;
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -634,7 +634,7 @@
     CGFloat chartHeight = size.height - _chartMarginTop - _chartMarginButtom;
     if (_displayAxis) {
         if (_displayFillColor) {
-            bezierPath = [self linePathWithSmoothing:_bezierSmoothing closing:YES];
+            bezierPath = [self _linePathWithSmoothing:_bezierSmoothing closing:YES];
             [_fillColor setFill];
             [bezierPath fill];
         }
@@ -643,14 +643,14 @@
             bezierPath.lineWidth = _innerGridLineWidth;
             [_innerGridColor setStroke];
             for (int i = 1; i < numberOfIndexScales; i++) {
-                point = [self pointForValue:_minValue atIndex:i];
+                point = [self _pointForValue:_minValue atIndex:i];
                 [bezierPath moveToPoint:point];
                 point.y -= chartHeight;
                 [bezierPath addLineToPoint:point];
                 [bezierPath stroke];
             }
             for (int i = 0; i < numberOfValueScales; i++) {
-                point = [self pointForValue:[self valueForValueLabelAtIndex:i] atIndex:0];
+                point = [self _pointForValue:[self _valueForValueLabelAtIndex:i] atIndex:0];
                 [bezierPath moveToPoint:point];
                 point.x += chartWidth;
                 [bezierPath addLineToPoint:point];
@@ -662,14 +662,14 @@
             bezierPath.lineWidth = _axisLineWidth;
             [_axisColor setStroke];
             for (int i = 1; i < numberOfIndexScales; i++) {
-                point = [self pointForValue:_minValue atIndex:i];
+                point = [self _pointForValue:_minValue atIndex:i];
                 [bezierPath moveToPoint:point];
                 point.y -= 3.0;
                 [bezierPath addLineToPoint:point];
                 [bezierPath stroke];
             }
             for (int i = 0; i < numberOfValueScales; i++) {
-                point = [self pointForValue:[self valueForValueLabelAtIndex:i] atIndex:0];
+                point = [self _pointForValue:[self _valueForValueLabelAtIndex:i] atIndex:0];
                 [bezierPath moveToPoint:point];
                 point.x += 3.0;
                 [bezierPath addLineToPoint:point];
@@ -679,25 +679,25 @@
         bezierPath = [UIBezierPath bezierPath];
         bezierPath.lineWidth = _axisLineWidth;
         [_axisColor setStroke];
-        point = [self pointForValue:_minValue atIndex:0];
+        point = [self _pointForValue:_minValue atIndex:0];
         [bezierPath moveToPoint:point];
         point.x += chartWidth;
         [bezierPath addLineToPoint:point];
         [bezierPath stroke];
-        point = [self pointForValue:_minValue atIndex:0];
+        point = [self _pointForValue:_minValue atIndex:0];
         [bezierPath moveToPoint:point];
         point.y -= chartHeight;
         [bezierPath addLineToPoint:point];
         [bezierPath stroke];
     }
-    bezierPath = [self linePathWithSmoothing:_bezierSmoothing closing:NO];
+    bezierPath = [self _linePathWithSmoothing:_bezierSmoothing closing:NO];
     bezierPath.lineWidth = _lineWidth;
     [_color setStroke];
     [bezierPath stroke];
     if (_displayDataPoint)
         for (int i = 0; i < numberOfDataPoints; i++) {
             value = [_dataSource lineChartView:self valueAtIndex:i];
-            point = [self pointForValue:value atDataPointIndex:i];
+            point = [self _pointForValue:value atDataPointIndex:i];
             bezierPath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(point.x - _dataPointRadius, point.y - _dataPointRadius, _dataPointRadius * 2, _dataPointRadius * 2)];
             bezierPath.lineWidth = _dataPointBorderWidth;
             [_dataPointColor setFill];

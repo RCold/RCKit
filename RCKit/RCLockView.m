@@ -25,18 +25,18 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self != nil)
-        [self initLockView];
+        [self _initRCLockView];
     return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self != nil)
-        [self initLockView];
+        [self _initRCLockView];
     return self;
 }
 
-- (void)initLockView {
+- (void)_initRCLockView {
     _displayPath = YES;
     _pathLineWidth = 10.0;
     _pathLineColor = [UIColor lightGrayColor];
@@ -47,7 +47,24 @@
     _buttonImage = [UIImage imageNamed:@"gesture_node_normal.png" inBundle:bundle compatibleWithTraitCollection:nil];
     _buttonSelectedImage = [UIImage imageNamed:@"gesture_node_selected.png" inBundle:bundle compatibleWithTraitCollection:nil];
     self.backgroundColor = [UIColor clearColor];
-    [self updateSubviews];
+    [self _updateSubviews];
+}
+
+- (void)_updateSubviews {
+    [_buttons makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    NSUInteger numberOfButtons = _numberOfRows * _numberOfColumns;
+    _buttons = [NSMutableArray arrayWithCapacity:numberOfButtons];
+    _selectedButtons = [NSMutableArray arrayWithCapacity:numberOfButtons];
+    for (int i = 0; i < numberOfButtons ; i++) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setBackgroundImage:_buttonImage forState:UIControlStateNormal];
+        [button setBackgroundImage:_buttonSelectedImage forState:UIControlStateSelected];
+        button.userInteractionEnabled = NO;
+        button.tag = i;
+        [_buttons addObject:button];
+        [self addSubview:button];
+    }
+    [self setNeedsLayout];
 }
 
 - (void)setDisplayPath:(BOOL)displayPath {
@@ -73,14 +90,14 @@
     if (numberOfRows < 3)
         return;
     _numberOfRows = numberOfRows;
-    [self updateSubviews];
+    [self _updateSubviews];
 }
 
 - (void)setNumberOfColumns:(NSUInteger)numberOfColumns {
     if (numberOfColumns < 3)
         return;
     _numberOfColumns = numberOfColumns;
-    [self updateSubviews];
+    [self _updateSubviews];
 }
 
 - (void)setButtonSize:(CGSize)buttonSize {
@@ -90,29 +107,12 @@
 
 - (void)setButtonImage:(UIImage *)buttonImage {
     _buttonImage = buttonImage;
-    [self updateSubviews];
+    [self _updateSubviews];
 }
 
 - (void)setButtonSelectedImage:(UIImage *)buttonSelectedImage {
     _buttonSelectedImage = buttonSelectedImage;
-    [self updateSubviews];
-}
-
-- (void)updateSubviews {
-    [_buttons makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    NSUInteger numberOfButtons = _numberOfRows * _numberOfColumns;
-    _buttons = [NSMutableArray arrayWithCapacity:numberOfButtons];
-    _selectedButtons = [NSMutableArray arrayWithCapacity:numberOfButtons];
-    for (int i = 0; i < numberOfButtons ; i++) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button setBackgroundImage:_buttonImage forState:UIControlStateNormal];
-        [button setBackgroundImage:_buttonSelectedImage forState:UIControlStateSelected];
-        button.userInteractionEnabled = NO;
-        button.tag = i;
-        [_buttons addObject:button];
-        [self addSubview:button];
-    }
-    [self setNeedsLayout];
+    [self _updateSubviews];
 }
 
 - (void)layoutSubviews {
@@ -160,7 +160,6 @@
         button.selected = NO;
         [path appendFormat:@"%ld", (long)button.tag];
     }
-    [_selectedButtons makeObjectsPerformSelector:@selector(setSelected:) withObject:@NO];
     [_selectedButtons removeAllObjects];
     if (path.length > 0 && [_delegate respondsToSelector:@selector(lockView:didFinishInputingWithPath:)])
         [_delegate lockView:self didFinishInputingWithPath:[path copy]];
