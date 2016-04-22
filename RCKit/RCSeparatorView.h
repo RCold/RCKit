@@ -1,8 +1,8 @@
 //
-//  RCKit.h
+//  RCSeparatorView.h
 //  RCKit
 //
-//  Created by Yeuham Wang on 16/2/24.
+//  Created by Yeuham Wang on 16/4/18.
 //  Copyright (c) 2016 Yeuham Wang.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,14 +18,14 @@
 // limitations under the License.
 //
 
-#import "RCAlertController.h"
-#import "RCButtonCollectionView.h"
-#import "RCImage.h"
-#import "RCLineChartView.h"
-#import "RCLockView.h"
-#import "RCNavigationBar.h"
-#import "RCNavigationItem.h"
-#import "RCSearchBar.h"
-#import "RCSegmentedBar.h"
-#import "RCSeparatorView.h"
-#import "RCTextField.h"
+#import <UIKit/UIKit.h>
+
+@interface RCSeparatorView : UIView
+
+@property (strong, nonatomic) UIColor *separatorColor;
+@property (nonatomic) BOOL showTopSeparator;
+@property (nonatomic) BOOL showBottomSeparator;
+@property (nonatomic) BOOL showLeadingSeparator;
+@property (nonatomic) BOOL showTrailingSeparator;
+
+@end
