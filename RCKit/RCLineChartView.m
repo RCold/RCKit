@@ -70,7 +70,6 @@
     _dataLabelBackgroundColor = [UIColor colorWithWhite:1.0 alpha:0.8];
     _bezierSmoothing = YES;
     _bezierSmoothingTension = 0.25;
-    self.backgroundColor = [UIColor clearColor];
     [self reloadData];
 }
 

@@ -46,7 +46,6 @@
     NSBundle *bundle = [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"RCLockView" ofType:@"bundle"]];
     _buttonImage = [UIImage imageNamed:@"gesture_node_normal.png" inBundle:bundle compatibleWithTraitCollection:nil];
     _buttonSelectedImage = [UIImage imageNamed:@"gesture_node_selected.png" inBundle:bundle compatibleWithTraitCollection:nil];
-    self.backgroundColor = [UIColor clearColor];
     [self _updateSubviews];
 }
 
