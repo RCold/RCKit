@@ -20,7 +20,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCSearchBar : UISearchBar
+NS_CLASS_AVAILABLE_IOS(7_0) @interface RCSearchBar : UISearchBar
 
 @property (copy, nonatomic) NSAttributedString *attributedText;
 @property (strong, nonatomic) UIFont *font;

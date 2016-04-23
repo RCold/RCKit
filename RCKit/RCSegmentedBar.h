@@ -22,7 +22,7 @@
 
 @protocol RCSegmentedBarDelegate;
 
-@interface RCSegmentedBar : UIView {
+NS_CLASS_AVAILABLE_IOS(7_0) @interface RCSegmentedBar : UIView {
     NSMutableArray *_buttons;
     UIView *_indicatorBar;
 }

@@ -20,7 +20,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCSeparatorView : UIView
+NS_CLASS_AVAILABLE_IOS(7_0) @interface RCSeparatorView : UIView
 
 @property (strong, nonatomic) UIColor *separatorColor;
 @property (nonatomic) BOOL showTopSeparator;
