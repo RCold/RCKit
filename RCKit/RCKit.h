@@ -25,6 +25,7 @@
 #import "RCLockView.h"
 #import "RCNavigationBar.h"
 #import "RCNavigationItem.h"
+#import "RCPhotoView.h"
 #import "RCSearchBar.h"
 #import "RCSegmentedBar.h"
 #import "RCSeparatorView.h"

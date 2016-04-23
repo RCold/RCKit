@@ -28,6 +28,7 @@
 		C348702C1CC9D497007F24E3 /* RCSegmentedBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C34870291CC9D497007F24E3 /* RCSegmentedBar.m */; };
 		C348702D1CC9D497007F24E3 /* RCSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = C348702B1CC9D497007F24E3 /* RCSeparatorView.m */; };
 		C36D04D81CA133E700D18132 /* RCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C36D04D71CA133E700D18132 /* RCSearchBar.m */; };
+		C39A68FF1CCB2C5800385BE1 /* RCPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39A68FE1CCB2C5800385BE1 /* RCPhotoView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +72,8 @@
 		C348702B1CC9D497007F24E3 /* RCSeparatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSeparatorView.m; sourceTree = "<group>"; };
 		C36D04D61CA133E700D18132 /* RCSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchBar.h; sourceTree = "<group>"; };
 		C36D04D71CA133E700D18132 /* RCSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchBar.m; sourceTree = "<group>"; };
+		C39A68FD1CCB2C5800385BE1 /* RCPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPhotoView.h; sourceTree = "<group>"; };
+		C39A68FE1CCB2C5800385BE1 /* RCPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPhotoView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +169,8 @@
 				C325D07D1C7FF8D3005F4902 /* RCNavigationBar.m */,
 				C325D07E1C7FF8D3005F4902 /* RCNavigationItem.h */,
 				C325D07F1C7FF8D3005F4902 /* RCNavigationItem.m */,
+				C39A68FD1CCB2C5800385BE1 /* RCPhotoView.h */,
+				C39A68FE1CCB2C5800385BE1 /* RCPhotoView.m */,
 				C36D04D61CA133E700D18132 /* RCSearchBar.h */,
 				C36D04D71CA133E700D18132 /* RCSearchBar.m */,
 				C34870281CC9D497007F24E3 /* RCSegmentedBar.h */,
@@ -251,6 +256,7 @@
 			files = (
 				C325D0871C7FF8D3005F4902 /* RCLockView.m in Sources */,
 				C348702D1CC9D497007F24E3 /* RCSeparatorView.m in Sources */,
+				C39A68FF1CCB2C5800385BE1 /* RCPhotoView.m in Sources */,
 				C348702C1CC9D497007F24E3 /* RCSegmentedBar.m in Sources */,
 				C313CB961C82D2510014FC1E /* ShowAlertSegue.m in Sources */,
 				C313CB9E1C82D80A0014FC1E /* ButtonCollectionViewController.m in Sources */,
