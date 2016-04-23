@@ -38,10 +38,9 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface RCSegmentedBar : UIView {
 
 @end
 
-
 @protocol RCSegmentedBarDelegate <NSObject>
 
 @optional
-- (void)segmentedBar:(RCSegmentedBar *)segmentedBar segmentButtonAtIndexDidTouch:(NSInteger)segmentIndex;
+- (void)segmentedBar:(RCSegmentedBar *)segmentedBar buttonAtIndexDidTouch:(NSInteger)segmentIndex;
 
 @end

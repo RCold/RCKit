@@ -54,7 +54,6 @@
         [button setTitleColor:_titleColor forState:UIControlStateNormal];
         [button setTitleColor:_titleColor forState:UIControlStateHighlighted];
         [button setTitleColor:self.tintColor forState:UIControlStateSelected];
-        [button setTitleColor:_titleColor forState:UIControlStateReserved];
         [button addTarget:self action:@selector(_buttonDidTouch:) forControlEvents:UIControlEventTouchUpInside];
         button.titleLabel.font = _titleFont;
     }
@@ -74,8 +73,8 @@
 }
 
 - (void)_buttonDidTouch:(id)sender {
-    if ([_delegate respondsToSelector:@selector(segmentedBar:segmentButtonAtIndexDidTouch:)])
-        [_delegate segmentedBar:self segmentButtonAtIndexDidTouch:[_buttons indexOfObject:sender]];
+    if ([_delegate respondsToSelector:@selector(segmentedBar:buttonAtIndexDidTouch:)])
+        [_delegate segmentedBar:self buttonAtIndexDidTouch:[_buttons indexOfObject:sender]];
 }
 
 - (void)setItems:(NSArray *)items {
@@ -115,10 +114,6 @@
 }
 
 - (void)setIndicatorBarOffset:(CGFloat)indicatorBarOffset {
-    if (indicatorBarOffset < 0.0)
-        indicatorBarOffset = 0.0;
-    else if (indicatorBarOffset > _items.count - 1)
-        indicatorBarOffset = _items.count - 1;
     _indicatorBarOffset = indicatorBarOffset;
     _selectedSegmentIndex = (NSInteger)(indicatorBarOffset + 0.5);
     [self _setSelectedSegmentIndex:_selectedSegmentIndex];
