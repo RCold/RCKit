@@ -50,6 +50,8 @@
 - (void)_dismissAlert {
     _alertWindow.hidden = YES;
     _alertWindow.rootViewController = nil;
+    [_dimmingView.layer removeAllAnimations];
+    [self.view.layer removeAllAnimations];
     [self removeFromParentViewController];
 }
 
@@ -67,8 +69,10 @@
     if (_presented)
         return;
     _presented = YES;
-    if (_animating)
+    if (_animating) {
+        _animating = NO;
         [self _dismissAlert];
+    }
     _style = style;
     UIViewController *rootViewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
     _alertWindow.rootViewController = rootViewController;
@@ -107,9 +111,9 @@
                 break;
         }
     } completion:^(BOOL finished) {
-        _animating = NO;
         if (!finished)
             return;
+        _animating = NO;
         [self didMoveToParentViewController:rootViewController];
         if (completion != nil)
             completion();
@@ -121,6 +125,7 @@
         return;
     _presented = NO;
     if (_animating) {
+        _animating = NO;
         [self _dismissAlert];
         return;
     }
@@ -141,9 +146,9 @@
                 break;
         }
     } completion:^(BOOL finished) {
-        _animating = NO;
         if (!finished)
             return;
+        _animating = NO;
         [self _dismissAlert];
         if (completion != nil)
             completion();
