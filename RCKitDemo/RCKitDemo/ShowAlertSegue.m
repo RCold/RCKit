@@ -13,7 +13,7 @@
 
 - (void)perform {
     RCAlertController *alertController = (RCAlertController *)self.destinationViewController;
-    [alertController presentAlertWithStyle:RCAlertControllerStyleAlert animated:YES];
+    [alertController presentAlertWithStyle:RCAlertControllerStyleAlert animated:YES completion:nil];
 }
 
 @end

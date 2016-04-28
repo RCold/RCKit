@@ -21,7 +21,7 @@
 }
 
 - (IBAction)okButtonDidTouch:(UIButton *)sender {
-    [self dismissAlertAnimated:YES];
+    [self dismissAlertAnimated:YES completion:nil];
 }
 
 @end

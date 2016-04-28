@@ -78,7 +78,7 @@
 }
 
 - (void)setItems:(NSArray *)items {
-    _items = items;
+    _items = [items copy];
     _buttons = [NSMutableArray arrayWithCapacity:items.count];
     for (NSString *item in items) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];

@@ -33,8 +33,10 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface RCAlertController : UIViewController {
 }
 
 @property (nonatomic) BOOL dimsBackgroundDuringPresentation;
+@property (nonatomic) NSTimeInterval animationDuration;
+@property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 
-- (void)presentAlertWithStyle:(RCAlertControllerStyle)style animated:(BOOL)animated;
-- (void)dismissAlertAnimated:(BOOL)animated;
+- (void)presentAlertWithStyle:(RCAlertControllerStyle)style animated:(BOOL)animated completion:(void (^)(void))completion;
+- (void)dismissAlertAnimated:(BOOL)animated completion:(void (^)(void))completion;
 
 @end

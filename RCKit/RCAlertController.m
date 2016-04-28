@@ -39,14 +39,23 @@
 - (void)_initRCAlertController {
     _alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     _alertWindow.windowLevel = UIWindowLevelAlert;
+    _animationDuration = 0.4;
     _dimmingView = [[UIView alloc] initWithFrame:_alertWindow.bounds];
     _dimmingView.backgroundColor = [UIColor blackColor];
+    [_dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dimmingViewDidTap:)]];
     _dimsBackgroundDuringPresentation = YES;
     _presented = NO;
 }
 
-- (void)_dimmingViewDidTap:(UITapGestureRecognizer *)sender {
-    [self dismissAlertAnimated:YES];
+- (void)_dismissAlert {
+    _alertWindow.hidden = YES;
+    _alertWindow.rootViewController = nil;
+    [self removeFromParentViewController];
+}
+
+- (void)_dimmingViewDidTap:(id)sender {
+    if (_style == RCAlertControllerStyleActionSheet)
+        [self dismissAlertAnimated:YES completion:nil];
 }
 
 - (void)setDimsBackgroundDuringPresentation:(BOOL)dimsBackgroundDuringPresentation {
@@ -54,23 +63,24 @@
     _dimmingView.hidden = !_dimsBackgroundDuringPresentation;
 }
 
-- (void)presentAlertWithStyle:(RCAlertControllerStyle)style animated:(BOOL)animated {
+- (void)presentAlertWithStyle:(RCAlertControllerStyle)style animated:(BOOL)animated completion:(void (^)(void))completion {
     if (_presented)
         return;
+    _presented = YES;
+    if (_animating)
+        [self _dismissAlert];
     _style = style;
     UIViewController *rootViewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
     _alertWindow.rootViewController = rootViewController;
     UIView *rootView = rootViewController.view;
     UIView *alertView = self.view;
-    CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    CGSize alertViewSize = alertView.bounds.size;
-    [rootViewController addChildViewController:self];
     [rootView addSubview:_dimmingView];
     [rootView addSubview:alertView];
     _dimmingView.alpha = 0.0;
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    CGSize alertViewSize = alertView.bounds.size;
     switch (_style) {
         case RCAlertControllerStyleActionSheet:
-            [_dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dimmingViewDidTap:)]];
             alertView.alpha = 1.0;
             alertView.center = CGPointMake(screenSize.width / 2.0, screenSize.height + alertViewSize.height / 2.0);
             alertView.transform = CGAffineTransformIdentity;
@@ -82,7 +92,9 @@
             break;
     }
     [_alertWindow makeKeyAndVisible];
-    CGFloat animationDuration = animated ? 0.4 : 0.0;
+    NSTimeInterval animationDuration = animated ? _animationDuration : 0.0;
+    [rootViewController addChildViewController:self];
+    _animating = YES;
     [UIView animateWithDuration:animationDuration delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:0 animations:^{
         _dimmingView.alpha = 0.4;
         switch (_style) {
@@ -95,21 +107,29 @@
                 break;
         }
     } completion:^(BOOL finished) {
-        _presented = YES;
-        [self didMoveToParentViewController:rootViewController];
+        _animating = NO;
         if (!finished)
-            [self dismissAlertAnimated:NO];
+            return;
+        [self didMoveToParentViewController:rootViewController];
+        if (completion != nil)
+            completion();
     }];
 }
 
-- (void)dismissAlertAnimated:(BOOL)animated {
+- (void)dismissAlertAnimated:(BOOL)animated completion:(void (^)(void))completion {
     if (!_presented)
         return;
+    _presented = NO;
+    if (_animating) {
+        [self _dismissAlert];
+        return;
+    }
     UIView *alertView = self.view;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    CGSize alertViewSize = self.view.bounds.size;
-    CGFloat animationDuration = animated ? 0.4 : 0.0;
+    CGSize alertViewSize = alertView.bounds.size;
+    NSTimeInterval animationDuration = animated ? _animationDuration : 0.0;
     [self willMoveToParentViewController:nil];
+    _animating = YES;
     [UIView animateWithDuration:animationDuration delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:0 animations:^{
         _dimmingView.alpha = 0.0;
         switch (_style) {
@@ -121,10 +141,12 @@
                 break;
         }
     } completion:^(BOOL finished) {
-        _alertWindow.hidden = YES;
-        _alertWindow.rootViewController = nil;
-        _presented = NO;
-        [self removeFromParentViewController];
+        _animating = NO;
+        if (!finished)
+            return;
+        [self _dismissAlert];
+        if (completion != nil)
+            completion();
     }];
 }
 

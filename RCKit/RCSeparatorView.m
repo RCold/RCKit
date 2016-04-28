@@ -37,7 +37,7 @@
 }
 
 - (void)_initRCSeparatorView {
-    _separatorColor = [UIColor colorWithWhite:0.7 alpha:1.0];
+    _separatorColor = [UIColor colorWithWhite:0.8 alpha:1.0];
     _showTopSeparator = NO;
     _showBottomSeparator = NO;
     _showLeadingSeparator = NO;
