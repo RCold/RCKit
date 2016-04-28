@@ -27,6 +27,8 @@
 		C325D08A1C7FF8D3005F4902 /* RCTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D0811C7FF8D3005F4902 /* RCTextField.m */; };
 		C348702C1CC9D497007F24E3 /* RCSegmentedBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C34870291CC9D497007F24E3 /* RCSegmentedBar.m */; };
 		C348702D1CC9D497007F24E3 /* RCSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = C348702B1CC9D497007F24E3 /* RCSeparatorView.m */; };
+		C35D926C1CD1F51B00EA3B8F /* RCDropdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35D92691CD1F51B00EA3B8F /* RCDropdownView.m */; };
+		C35D926D1CD1F51B00EA3B8F /* RCSegmentedBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35D926B1CD1F51B00EA3B8F /* RCSegmentedBarController.m */; };
 		C36D04D81CA133E700D18132 /* RCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C36D04D71CA133E700D18132 /* RCSearchBar.m */; };
 		C39A68FF1CCB2C5800385BE1 /* RCPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39A68FE1CCB2C5800385BE1 /* RCPhotoView.m */; };
 /* End PBXBuildFile section */
@@ -70,6 +72,10 @@
 		C34870291CC9D497007F24E3 /* RCSegmentedBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSegmentedBar.m; sourceTree = "<group>"; };
 		C348702A1CC9D497007F24E3 /* RCSeparatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSeparatorView.h; sourceTree = "<group>"; };
 		C348702B1CC9D497007F24E3 /* RCSeparatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSeparatorView.m; sourceTree = "<group>"; };
+		C35D92681CD1F51B00EA3B8F /* RCDropdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDropdownView.h; sourceTree = "<group>"; };
+		C35D92691CD1F51B00EA3B8F /* RCDropdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDropdownView.m; sourceTree = "<group>"; };
+		C35D926A1CD1F51B00EA3B8F /* RCSegmentedBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSegmentedBarController.h; sourceTree = "<group>"; };
+		C35D926B1CD1F51B00EA3B8F /* RCSegmentedBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSegmentedBarController.m; sourceTree = "<group>"; };
 		C36D04D61CA133E700D18132 /* RCSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchBar.h; sourceTree = "<group>"; };
 		C36D04D71CA133E700D18132 /* RCSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchBar.m; sourceTree = "<group>"; };
 		C39A68FD1CCB2C5800385BE1 /* RCPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPhotoView.h; sourceTree = "<group>"; };
@@ -157,6 +163,8 @@
 				C325D0711C7FF8D3005F4902 /* RCAlertController.m */,
 				C325D0721C7FF8D3005F4902 /* RCButtonCollectionView.h */,
 				C325D0731C7FF8D3005F4902 /* RCButtonCollectionView.m */,
+				C35D92681CD1F51B00EA3B8F /* RCDropdownView.h */,
+				C35D92691CD1F51B00EA3B8F /* RCDropdownView.m */,
 				C325D0741C7FF8D3005F4902 /* RCImage.h */,
 				C325D0751C7FF8D3005F4902 /* RCImage.m */,
 				C325D0761C7FF8D3005F4902 /* RCKit.h */,
@@ -175,6 +183,8 @@
 				C36D04D71CA133E700D18132 /* RCSearchBar.m */,
 				C34870281CC9D497007F24E3 /* RCSegmentedBar.h */,
 				C34870291CC9D497007F24E3 /* RCSegmentedBar.m */,
+				C35D926A1CD1F51B00EA3B8F /* RCSegmentedBarController.h */,
+				C35D926B1CD1F51B00EA3B8F /* RCSegmentedBarController.m */,
 				C348702A1CC9D497007F24E3 /* RCSeparatorView.h */,
 				C348702B1CC9D497007F24E3 /* RCSeparatorView.m */,
 				C325D0801C7FF8D3005F4902 /* RCTextField.h */,
@@ -257,9 +267,11 @@
 				C325D0871C7FF8D3005F4902 /* RCLockView.m in Sources */,
 				C348702D1CC9D497007F24E3 /* RCSeparatorView.m in Sources */,
 				C39A68FF1CCB2C5800385BE1 /* RCPhotoView.m in Sources */,
+				C35D926D1CD1F51B00EA3B8F /* RCSegmentedBarController.m in Sources */,
 				C348702C1CC9D497007F24E3 /* RCSegmentedBar.m in Sources */,
 				C313CB961C82D2510014FC1E /* ShowAlertSegue.m in Sources */,
 				C313CB9E1C82D80A0014FC1E /* ButtonCollectionViewController.m in Sources */,
+				C35D926C1CD1F51B00EA3B8F /* RCDropdownView.m in Sources */,
 				C325D0851C7FF8D3005F4902 /* RCLineChartView.m in Sources */,
 				C313CB931C82D1330014FC1E /* CustomAlertController.m in Sources */,
 				C325D0841C7FF8D3005F4902 /* RCImage.m in Sources */,

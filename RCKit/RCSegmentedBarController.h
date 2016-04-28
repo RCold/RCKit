@@ -1,8 +1,8 @@
 //
-//  RCKit.h
+//  RCSegmentedBarController.h
 //  RCKit
 //
-//  Created by Yeuham Wang on 16/2/24.
+//  Created by Yeuham Wang on 16/4/25.
 //  Copyright (c) 2016 Yeuham Wang.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,17 +18,14 @@
 // limitations under the License.
 //
 
-#import "RCAlertController.h"
-#import "RCButtonCollectionView.h"
-#import "RCDropdownView.h"
-#import "RCImage.h"
-#import "RCLineChartView.h"
-#import "RCLockView.h"
-#import "RCNavigationBar.h"
-#import "RCNavigationItem.h"
-#import "RCPhotoView.h"
-#import "RCSearchBar.h"
+#import <UIKit/UIKit.h>
 #import "RCSegmentedBar.h"
-#import "RCSegmentedBarController.h"
-#import "RCSeparatorView.h"
-#import "RCTextField.h"
+
+@interface RCSegmentedBarController : UIViewController <RCSegmentedBarDelegate, UIScrollViewDelegate> {
+    UIScrollView *_scrollView;
+}
+
+@property (readonly, nonatomic) RCSegmentedBar *segmentedBar;
+@property (copy, nonatomic) NSArray *viewControllers;
+
+@end
