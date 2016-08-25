@@ -39,6 +39,7 @@
 - (void)_initRCAlertController {
     _alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     _alertWindow.windowLevel = UIWindowLevelAlert;
+    _animating = NO;
     _animationDuration = 0.4;
     _dimmingView = [[UIView alloc] initWithFrame:_alertWindow.bounds];
     _dimmingView.backgroundColor = [UIColor blackColor];
@@ -50,10 +51,10 @@
 - (void)_dismissAlert {
     UIView *alertView = self.view;
     _animating = NO;
-    [_dimmingView removeFromSuperview];
-    [_dimmingView.layer removeAllAnimations];
     [alertView removeFromSuperview];
     [alertView.layer removeAllAnimations];
+    [_dimmingView removeFromSuperview];
+    [_dimmingView.layer removeAllAnimations];
     _alertWindow.hidden = YES;
     _alertWindow.rootViewController = nil;
     [self removeFromParentViewController];
@@ -64,11 +65,6 @@
         [self dismissAlertAnimated:YES completion:nil];
 }
 
-- (void)setDimsBackgroundDuringPresentation:(BOOL)dimsBackgroundDuringPresentation {
-    _dimsBackgroundDuringPresentation = dimsBackgroundDuringPresentation;
-    _dimmingView.hidden = !_dimsBackgroundDuringPresentation;
-}
-
 - (void)presentAlertWithStyle:(RCAlertControllerStyle)style animated:(BOOL)animated completion:(void (^)(void))completion {
     [self _dismissAlert];
     _style = style;
@@ -76,9 +72,6 @@
     _alertWindow.rootViewController = rootViewController;
     UIView *rootView = rootViewController.view;
     UIView *alertView = self.view;
-    [rootView addSubview:_dimmingView];
-    [rootView addSubview:alertView];
-    _dimmingView.alpha = 0.0;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     CGSize alertViewSize = alertView.bounds.size;
     switch (_style) {
@@ -93,12 +86,17 @@
             alertView.transform = CGAffineTransformMakeScale(1.2, 1.2);
             break;
     }
+    _dimmingView.alpha = 0.0;
+    [rootView addSubview:_dimmingView];
+    [rootView addSubview:alertView];
+    [rootView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dimmingViewDidTap:)]];
     [_alertWindow makeKeyAndVisible];
     NSTimeInterval animationDuration = animated ? _animationDuration : 0.0;
     [rootViewController addChildViewController:self];
     _animating = YES;
     [UIView animateWithDuration:animationDuration delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:0 animations:^{
-        _dimmingView.alpha = 0.4;
+        if (_dimsBackgroundDuringPresentation)
+            _dimmingView.alpha = 0.4;
         switch (_style) {
             case RCAlertControllerStyleActionSheet:
                 alertView.center = CGPointMake(screenSize.width / 2.0, screenSize.height - alertViewSize.height / 2.0);
