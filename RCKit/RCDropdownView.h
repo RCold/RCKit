@@ -20,20 +20,28 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, RCDropdownViewDirection) {
+    RCDropdownViewDirectionTopToBottom,
+    RCDropdownViewDirectionBottomToTop,
+    RCDropdownViewDirectionLeftToRight,
+    RCDropdownViewDirectionRightToLeft,
+} NS_ENUM_AVAILABLE_IOS(7_0);
+
 @protocol RCDropdownViewDelegate;
 
-@interface RCDropdownView : UIView {
-    BOOL _presented;
+NS_CLASS_AVAILABLE_IOS(7_0) @interface RCDropdownView : UIView {
+    UIView *_clippingView;
+    UIView *_containerView;
     UIView *_dimmingView;
-    UIView *_presentedView;
 }
 
 @property (weak, nonatomic) id<RCDropdownViewDelegate> delegate;
 @property (nonatomic) BOOL dimsBackgroundDuringPresentation;
 @property (nonatomic) NSTimeInterval animationDuration;
+@property (readonly, nonatomic, getter=isPresented) BOOL presented;
 @property (readonly, nonatomic, getter=isAnimating) BOOL animating;
 
-- (void)presentView:(UIView *)view animated:(BOOL)animated completion:(void (^)(void))completion;
+- (void)presentInView:(UIView *)view atPoint:(CGPoint)point withDirection:(RCDropdownViewDirection)direction animated:(BOOL)animated completion:(void (^)(void))completion;
 - (void)dismissViewAnimated:(BOOL)animated completion:(void (^)(void))completion;
 
 @end

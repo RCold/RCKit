@@ -39,22 +39,25 @@
 - (void)_initRCDropdownView {
     _animating = NO;
     _animationDuration = 0.2;
+    _clippingView = [[UIView alloc] initWithFrame:CGRectZero];
+    _clippingView.clipsToBounds = YES;
+    _containerView = [[UIView alloc] initWithFrame:CGRectZero];
     _dimmingView = [[UIView alloc] initWithFrame:CGRectZero];
     _dimmingView.backgroundColor = [UIColor blackColor];
-    _dimmingView.hidden = YES;
     [_dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dimmingViewDidTap:)]];
     _dimsBackgroundDuringPresentation = YES;
-    self.hidden = YES;
-    [self addSubview:_dimmingView];
+    _presented = NO;
 }
 
 - (void)_dismissView {
-    _dimmingView.hidden = YES;
+    _animating = NO;
+    [self removeFromSuperview];
+    [self.layer removeAllAnimations];
+    [_clippingView removeFromSuperview];
+    [_clippingView.layer removeAllAnimations];
+    [_dimmingView removeFromSuperview];
     [_dimmingView.layer removeAllAnimations];
-    [_presentedView removeFromSuperview];
-    [_presentedView.layer removeAllAnimations];
-    _presentedView = nil;
-    self.hidden = YES;
+    [_containerView removeFromSuperview];
 }
 
 - (void)_dimmingViewDidTap:(id)sender {
@@ -62,41 +65,61 @@
         [_delegate dropdownViewDimmingViewDidTap:self];
 }
 
-- (void)presentView:(UIView *)view animated:(BOOL)animated completion:(void (^)(void))completion {
-    _presented = YES;
-    if (_animating) {
-        _animating = NO;
-        [self _dismissView];
-    }
+- (void)presentInView:(UIView *)view atPoint:(CGPoint)point withDirection:(RCDropdownViewDirection)direction animated:(BOOL)animated completion:(void (^)(void))completion {
+    [self _dismissView];
     CGSize size = self.bounds.size;
-    CGSize viewSize = view.frame.size;
-    CGRect initialViewFrame = CGRectMake(0.0, 0.0, size.width, 0.0);
-    CGRect finalViewFrame = CGRectMake(0.0, 0.0, size.width, viewSize.height);
+    CGRect finalViewFrame = CGRectMake(0.0, 0.0, size.width, size.height);
+    CGRect initialViewFrame = finalViewFrame;
+    CGRect clipperFinalViewFrame = CGRectMake(point.x, point.y, size.width, size.height);
+    CGRect clipperInitialViewFrame = clipperFinalViewFrame;
+    UIView *presentingView = view.superview;
+    if (presentingView != nil)
+        _containerView.frame = view.frame;
+    else {
+        presentingView = view;
+        _containerView.frame = view.bounds;
+    }
+    switch (direction) {
+        case RCDropdownViewDirectionBottomToTop:
+            initialViewFrame.origin.y -= size.height;
+            clipperInitialViewFrame.origin.y += size.height;
+        case RCDropdownViewDirectionTopToBottom:
+            clipperInitialViewFrame.size.height = 0.0;
+            break;
+        case RCDropdownViewDirectionRightToLeft:
+            initialViewFrame.origin.x -= size.width;
+            clipperInitialViewFrame.origin.x += size.width;
+        case RCDropdownViewDirectionLeftToRight:
+            clipperInitialViewFrame.size.width = 0.0;
+            break;
+    }
+    _clippingView.alpha = 1.0;
+    _clippingView.frame = clipperInitialViewFrame;
     _dimmingView.alpha = 0.0;
-    _dimmingView.hidden = !_dimsBackgroundDuringPresentation;
-    _presentedView = view;
-    view.alpha = 1.0;
-    view.frame = initialViewFrame;
-    [self addSubview:view];
-    self.hidden = NO;
+    _dimmingView.frame = _containerView.bounds;
+    self.frame = initialViewFrame;
+    [_clippingView addSubview:self];
+    [_containerView addSubview:_dimmingView];
+    [_containerView addSubview:_clippingView];
+    [presentingView addSubview:_containerView];
     NSTimeInterval animationDuration = animated ? _animationDuration : 0.0;
     _animating = YES;
     [UIView animateWithDuration:animationDuration animations:^{
-        _dimmingView.alpha = 0.3;
-        view.alpha = 1.0;
-        view.frame = finalViewFrame;
+        if (_dimsBackgroundDuringPresentation)
+            _dimmingView.alpha = 0.4;
+        _clippingView.frame = clipperFinalViewFrame;
+        self.frame = finalViewFrame;
     } completion:^(BOOL finished) {
         if (!finished)
             return;
         _animating = NO;
+        _presented = YES;
         if (completion != nil)
             completion();
     }];
 }
 
 - (void)dismissViewAnimated:(BOOL)animated completion:(void (^)(void))completion {
-    if (!_presented)
-        return;
     _presented = NO;
     if (_animating) {
         _animating = NO;
@@ -107,7 +130,7 @@
     _animating = YES;
     [UIView animateWithDuration:animationDuration animations:^{
         _dimmingView.alpha = 0.0;
-        _presentedView.alpha = 0.0;
+        _clippingView.alpha = 0.0;
     } completion:^(BOOL finished) {
         if (!finished)
             return;
@@ -116,11 +139,6 @@
         if (completion != nil)
             completion();
     }];
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    _dimmingView.frame = self.bounds;
 }
 
 @end
