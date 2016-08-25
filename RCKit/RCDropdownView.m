@@ -42,6 +42,7 @@
     _clippingView = [[UIView alloc] initWithFrame:CGRectZero];
     _clippingView.clipsToBounds = YES;
     _containerView = [[UIView alloc] initWithFrame:CGRectZero];
+    [_containerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dimmingViewDidTap:)]];
     _dimmingView = [[UIView alloc] initWithFrame:CGRectZero];
     _dimmingView.backgroundColor = [UIColor blackColor];
     [_dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dimmingViewDidTap:)]];
