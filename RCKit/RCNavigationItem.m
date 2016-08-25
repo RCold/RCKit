@@ -20,13 +20,6 @@
 
 #import "RCNavigationItem.h"
 
-@interface UINavigationItem (RCNavigationItem)
-
-- (void)setBackButtonTitle:(NSString *)backButtonTitle;
-- (NSString *)backButtonTitle;
-
-@end
-
 @implementation RCNavigationItem
 
 - (instancetype)initWithTitle:(NSString *)title {
@@ -48,14 +41,11 @@
 }
 
 - (void)setBackButtonTitle:(NSString *)backButtonTitle {
-    if ([super respondsToSelector:@selector(setBackButtonTitle:)])
-        [super setBackButtonTitle:backButtonTitle];
+    self.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:backButtonTitle style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 
 - (NSString *)backButtonTitle {
-    if ([super respondsToSelector:@selector(backButtonTitle)])
-        return [super backButtonTitle];
-    return nil;
+    return self.backBarButtonItem.title;
 }
 
 @end
