@@ -49,6 +49,7 @@
 
 - (void)_dismissAlert {
     UIView *alertView = self.view;
+    _animating = NO;
     [_dimmingView removeFromSuperview];
     [_dimmingView.layer removeAllAnimations];
     [alertView removeFromSuperview];
@@ -69,10 +70,7 @@
 }
 
 - (void)presentAlertWithStyle:(RCAlertControllerStyle)style animated:(BOOL)animated completion:(void (^)(void))completion {
-    if (_animating) {
-        _animating = NO;
-        [self _dismissAlert];
-    }
+    [self _dismissAlert];
     _style = style;
     UIViewController *rootViewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
     _alertWindow.rootViewController = rootViewController;
