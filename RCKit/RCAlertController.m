@@ -48,10 +48,13 @@
 }
 
 - (void)_dismissAlert {
+    UIView *alertView = self.view;
+    [_dimmingView removeFromSuperview];
+    [_dimmingView.layer removeAllAnimations];
+    [alertView removeFromSuperview];
+    [alertView.layer removeAllAnimations];
     _alertWindow.hidden = YES;
     _alertWindow.rootViewController = nil;
-    [_dimmingView.layer removeAllAnimations];
-    [self.view.layer removeAllAnimations];
     [self removeFromParentViewController];
 }
 
@@ -66,9 +69,6 @@
 }
 
 - (void)presentAlertWithStyle:(RCAlertControllerStyle)style animated:(BOOL)animated completion:(void (^)(void))completion {
-    if (_presented)
-        return;
-    _presented = YES;
     if (_animating) {
         _animating = NO;
         [self _dismissAlert];
@@ -114,6 +114,7 @@
         if (!finished)
             return;
         _animating = NO;
+        _presented = YES;
         [self didMoveToParentViewController:rootViewController];
         if (completion != nil)
             completion();
@@ -121,8 +122,6 @@
 }
 
 - (void)dismissAlertAnimated:(BOOL)animated completion:(void (^)(void))completion {
-    if (!_presented)
-        return;
     _presented = NO;
     if (_animating) {
         _animating = NO;
