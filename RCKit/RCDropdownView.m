@@ -47,6 +47,7 @@
     _dimsBackgroundDuringPresentation = YES;
     _presented = NO;
     _tappingView = [[UIView alloc] initWithFrame:CGRectZero];
+    _tappingView.backgroundColor = [UIColor clearColor];
     [_tappingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dismissViewForGestureRecognizer:)]];
 }
 
@@ -63,7 +64,8 @@
 }
 
 - (void)_dismissViewForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer {
-    [self dismissViewAnimated:YES completion:nil];
+    if (!_animating)
+        [self dismissViewAnimated:YES completion:nil];
 }
 
 - (void)presentInView:(UIView *)view atPoint:(CGPoint)point withDirection:(RCDropdownViewDirection)direction animated:(BOOL)animated completion:(void (^)(void))completion {
