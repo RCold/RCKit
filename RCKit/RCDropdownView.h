@@ -33,6 +33,7 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface RCDropdownView : UIView {
     UIView *_clippingView;
     UIView *_containerView;
     UIView *_dimmingView;
+    UIView *_tappingView;
 }
 
 @property (weak, nonatomic) id<RCDropdownViewDelegate> delegate;
@@ -49,6 +50,9 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface RCDropdownView : UIView {
 @protocol RCDropdownViewDelegate <NSObject>
 
 @optional
-- (void)dropdownViewDimmingViewDidTap:(RCDropdownView *)dropdownView;
+- (void)willPresentDropdownView:(RCDropdownView *)dropdownView;
+- (void)didPresentDropdownView:(RCDropdownView *)dropdownView;
+- (void)willDismissDropdownView:(RCDropdownView *)dropdownView;
+- (void)didDismissDropdownView:(RCDropdownView *)dropdownView;
 
 @end

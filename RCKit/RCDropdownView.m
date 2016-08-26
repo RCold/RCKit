@@ -42,12 +42,12 @@
     _clippingView = [[UIView alloc] initWithFrame:CGRectZero];
     _clippingView.clipsToBounds = YES;
     _containerView = [[UIView alloc] initWithFrame:CGRectZero];
-    [_containerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dimmingViewDidTap:)]];
     _dimmingView = [[UIView alloc] initWithFrame:CGRectZero];
     _dimmingView.backgroundColor = [UIColor blackColor];
-    [_dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dimmingViewDidTap:)]];
     _dimsBackgroundDuringPresentation = YES;
     _presented = NO;
+    _tappingView = [[UIView alloc] initWithFrame:CGRectZero];
+    [_tappingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dismissViewForGestureRecognizer:)]];
 }
 
 - (void)_dismissView {
@@ -56,17 +56,19 @@
     [self.layer removeAllAnimations];
     [_clippingView removeFromSuperview];
     [_clippingView.layer removeAllAnimations];
+    [_tappingView removeFromSuperview];
     [_dimmingView removeFromSuperview];
     [_dimmingView.layer removeAllAnimations];
     [_containerView removeFromSuperview];
 }
 
-- (void)_dimmingViewDidTap:(id)sender {
-    if ([_delegate respondsToSelector:@selector(dropdownViewDimmingViewDidTap:)])
-        [_delegate dropdownViewDimmingViewDidTap:self];
+- (void)_dismissViewForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer {
+    [self dismissViewAnimated:YES completion:nil];
 }
 
 - (void)presentInView:(UIView *)view atPoint:(CGPoint)point withDirection:(RCDropdownViewDirection)direction animated:(BOOL)animated completion:(void (^)(void))completion {
+    if ([_delegate respondsToSelector:@selector(willPresentDropdownView:)])
+        [_delegate willPresentDropdownView:self];
     [self _dismissView];
     CGSize size = self.bounds.size;
     CGRect finalViewFrame = CGRectMake(0.0, 0.0, size.width, size.height);
@@ -98,9 +100,11 @@
     _clippingView.frame = clipperInitialViewFrame;
     _dimmingView.alpha = 0.0;
     _dimmingView.frame = _containerView.bounds;
+    _tappingView.frame = _containerView.bounds;
     self.frame = initialViewFrame;
     [_clippingView addSubview:self];
     [_containerView addSubview:_dimmingView];
+    [_containerView addSubview:_tappingView];
     [_containerView addSubview:_clippingView];
     [presentingView addSubview:_containerView];
     NSTimeInterval animationDuration = animated ? _animationDuration : 0.0;
@@ -115,16 +119,22 @@
             return;
         _animating = NO;
         _presented = YES;
+        if ([_delegate respondsToSelector:@selector(didPresentDropdownView:)])
+            [_delegate didPresentDropdownView:self];
         if (completion != nil)
             completion();
     }];
 }
 
 - (void)dismissViewAnimated:(BOOL)animated completion:(void (^)(void))completion {
+    if ([_delegate respondsToSelector:@selector(willDismissDropdownView:)])
+        [_delegate willDismissDropdownView:self];
     _presented = NO;
     if (_animating) {
         _animating = NO;
         [self _dismissView];
+        if ([_delegate respondsToSelector:@selector(didDismissDropdownView:)])
+            [_delegate didDismissDropdownView:self];
         return;
     }
     NSTimeInterval animationDuration = animated ? _animationDuration : 0.0;
@@ -137,6 +147,8 @@
             return;
         _animating = NO;
         [self _dismissView];
+        if ([_delegate respondsToSelector:@selector(didDismissDropdownView:)])
+            [_delegate didDismissDropdownView:self];
         if (completion != nil)
             completion();
     }];
