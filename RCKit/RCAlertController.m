@@ -38,14 +38,15 @@
 
 - (void)_initRCAlertController {
     _alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    _alertWindow.windowLevel = UIWindowLevelAlert;
     _animating = NO;
     _animationDuration = 0.4;
     _dimmingView = [[UIView alloc] initWithFrame:_alertWindow.bounds];
     _dimmingView.backgroundColor = [UIColor blackColor];
-    [_dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dimmingViewDidTap:)]];
     _dimsBackgroundDuringPresentation = YES;
     _presented = NO;
+    _tappingView = [[UIView alloc] initWithFrame:_alertWindow.bounds];
+    _tappingView.backgroundColor = [UIColor clearColor];
+    [_tappingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dismissAlertForGestureRecognizer:)]];
 }
 
 - (void)_dismissAlert {
@@ -53,6 +54,7 @@
     _animating = NO;
     [alertView removeFromSuperview];
     [alertView.layer removeAllAnimations];
+    [_tappingView removeFromSuperview];
     [_dimmingView removeFromSuperview];
     [_dimmingView.layer removeAllAnimations];
     _alertWindow.hidden = YES;
@@ -60,12 +62,24 @@
     [self removeFromParentViewController];
 }
 
-- (void)_dimmingViewDidTap:(id)sender {
-    if (_style == RCAlertControllerStyleActionSheet)
+- (void)_dismissAlertForGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer {
+    if (!_animating && _style == RCAlertControllerStyleActionSheet)
         [self dismissAlertAnimated:YES completion:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    _alertWindow.windowLevel = UIWindowLevelAlert;
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    _alertWindow.windowLevel = UIWindowLevelNormal;
+}
+
 - (void)presentAlertWithStyle:(RCAlertControllerStyle)style animated:(BOOL)animated completion:(void (^)(void))completion {
+    if ([_delegate respondsToSelector:@selector(willPresentAlertController:)])
+        [_delegate willPresentAlertController:self];
     [self _dismissAlert];
     _style = style;
     UIViewController *rootViewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
@@ -88,8 +102,8 @@
     }
     _dimmingView.alpha = 0.0;
     [rootView addSubview:_dimmingView];
+    [rootView addSubview:_tappingView];
     [rootView addSubview:alertView];
-    [rootView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dimmingViewDidTap:)]];
     [_alertWindow makeKeyAndVisible];
     NSTimeInterval animationDuration = animated ? _animationDuration : 0.0;
     [rootViewController addChildViewController:self];
@@ -112,16 +126,22 @@
         _animating = NO;
         _presented = YES;
         [self didMoveToParentViewController:rootViewController];
+        if ([_delegate respondsToSelector:@selector(didPresentAlertController:)])
+            [_delegate didPresentAlertController:self];
         if (completion != nil)
             completion();
     }];
 }
 
 - (void)dismissAlertAnimated:(BOOL)animated completion:(void (^)(void))completion {
+    if ([_delegate respondsToSelector:@selector(willDismissAlertController:)])
+        [_delegate willDismissAlertController:self];
     _presented = NO;
     if (_animating) {
         _animating = NO;
         [self _dismissAlert];
+        if ([_delegate respondsToSelector:@selector(didDismissAlertController:)])
+            [_delegate didDismissAlertController:self];
         return;
     }
     UIView *alertView = self.view;
@@ -145,6 +165,8 @@
             return;
         _animating = NO;
         [self _dismissAlert];
+        if ([_delegate respondsToSelector:@selector(didDismissAlertController:)])
+            [_delegate didDismissAlertController:self];
         if (completion != nil)
             completion();
     }];

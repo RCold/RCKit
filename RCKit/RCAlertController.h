@@ -25,12 +25,16 @@ typedef NS_ENUM(NSInteger, RCAlertControllerStyle) {
     RCAlertControllerStyleAlert
 } NS_ENUM_AVAILABLE_IOS(7_0);
 
+@protocol RCAlertControllerDelegate;
+
 NS_CLASS_AVAILABLE_IOS(7_0) @interface RCAlertController : UIViewController {
     RCAlertControllerStyle _style;
     UIWindow *_alertWindow;
     UIView *_dimmingView;
+    UIView *_tappingView;
 }
 
+@property (weak, nonatomic) id<RCAlertControllerDelegate> delegate;
 @property (nonatomic) BOOL dimsBackgroundDuringPresentation;
 @property (nonatomic) NSTimeInterval animationDuration;
 @property (readonly, nonatomic, getter=isPresented) BOOL presented;
@@ -38,5 +42,15 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface RCAlertController : UIViewController {
 
 - (void)presentAlertWithStyle:(RCAlertControllerStyle)style animated:(BOOL)animated completion:(void (^)(void))completion;
 - (void)dismissAlertAnimated:(BOOL)animated completion:(void (^)(void))completion;
+
+@end
+
+@protocol RCAlertControllerDelegate <NSObject>
+
+@optional
+- (void)willPresentAlertController:(RCAlertController *)alertController;
+- (void)didPresentAlertController:(RCAlertController *)alertController;
+- (void)willDismissAlertController:(RCAlertController *)alertController;
+- (void)didDismissAlertController:(RCAlertController *)alertController;
 
 @end
