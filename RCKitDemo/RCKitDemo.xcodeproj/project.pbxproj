@@ -31,6 +31,7 @@
 		C35D926D1CD1F51B00EA3B8F /* RCSegmentedBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35D926B1CD1F51B00EA3B8F /* RCSegmentedBarController.m */; };
 		C36D04D81CA133E700D18132 /* RCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C36D04D71CA133E700D18132 /* RCSearchBar.m */; };
 		C39A68FF1CCB2C5800385BE1 /* RCPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39A68FE1CCB2C5800385BE1 /* RCPhotoView.m */; };
+		C3CD1BF31D704D26006B01E4 /* RCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3CD1BF21D704D26006B01E4 /* RCTextView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +81,8 @@
 		C36D04D71CA133E700D18132 /* RCSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchBar.m; sourceTree = "<group>"; };
 		C39A68FD1CCB2C5800385BE1 /* RCPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPhotoView.h; sourceTree = "<group>"; };
 		C39A68FE1CCB2C5800385BE1 /* RCPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPhotoView.m; sourceTree = "<group>"; };
+		C3CD1BF11D704D26006B01E4 /* RCTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTextView.h; sourceTree = "<group>"; };
+		C3CD1BF21D704D26006B01E4 /* RCTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTextView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +192,8 @@
 				C348702B1CC9D497007F24E3 /* RCSeparatorView.m */,
 				C325D0801C7FF8D3005F4902 /* RCTextField.h */,
 				C325D0811C7FF8D3005F4902 /* RCTextField.m */,
+				C3CD1BF11D704D26006B01E4 /* RCTextView.h */,
+				C3CD1BF21D704D26006B01E4 /* RCTextView.m */,
 			);
 			name = RCKit;
 			path = ../RCKit;
@@ -282,6 +287,7 @@
 				C313CB9A1C82D3020014FC1E /* ShowActionSheetSegue.m in Sources */,
 				C325D05D1C7FF8B8005F4902 /* AppDelegate.m in Sources */,
 				C325D05A1C7FF8B8005F4902 /* main.m in Sources */,
+				C3CD1BF31D704D26006B01E4 /* RCTextView.m in Sources */,
 				C325D0821C7FF8D3005F4902 /* RCAlertController.m in Sources */,
 				C325D0881C7FF8D3005F4902 /* RCNavigationBar.m in Sources */,
 			);
