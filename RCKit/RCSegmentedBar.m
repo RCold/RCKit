@@ -102,6 +102,7 @@
 - (void)setSelectedSegmentIndex:(NSInteger)selectedSegmentIndex {
     _selectedSegmentIndex = selectedSegmentIndex;
     [self _setSelectedSegmentIndex:selectedSegmentIndex];
+    [self layoutIfNeeded];
     [UIView animateWithDuration:_animateDuration animations:^{
         self.indicatorBarOffset = selectedSegmentIndex;
         [self layoutIfNeeded];

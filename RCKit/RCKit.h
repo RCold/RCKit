@@ -32,3 +32,4 @@
 #import "RCSegmentedBarController.h"
 #import "RCSeparatorView.h"
 #import "RCTextField.h"
+#import "RCTextView.h"
