@@ -38,6 +38,7 @@
 
 - (void)_initRCAlertController {
     _alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    _alertWindowHeight = _alertWindow.bounds.size.height;
     _animating = NO;
     _animationDuration = 0.4;
     _dimmingView = [[UIView alloc] initWithFrame:_alertWindow.bounds];
@@ -47,6 +48,44 @@
     _tappingView = [[UIView alloc] initWithFrame:_alertWindow.bounds];
     _tappingView.backgroundColor = [UIColor clearColor];
     [_tappingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dismissAlertForGestureRecognizer:)]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_positionAlertForNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
+}
+
+- (void)_positionAlertForNotification:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    CGRect keyboardFrameEnd = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    NSTimeInterval animationDuration = (NSTimeInterval)[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve animationCurve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
+    UIView *alertView = self.view;
+    if (animationCurve == UIViewAnimationCurveEaseIn) {
+        animationOptions |= UIViewAnimationOptionCurveEaseIn;
+    }
+    else if (animationCurve == UIViewAnimationCurveEaseInOut) {
+        animationOptions |= UIViewAnimationOptionCurveEaseInOut;
+    }
+    else if (animationCurve == UIViewAnimationCurveEaseOut) {
+        animationOptions |= UIViewAnimationOptionCurveEaseOut;
+    }
+    else if (animationCurve == UIViewAnimationCurveLinear) {
+        animationOptions |= UIViewAnimationOptionCurveLinear;
+    }
+    if (!_presented)
+        animationDuration = 0.0;
+    [alertView layoutIfNeeded];
+    [UIView animateWithDuration:animationDuration delay:0 options:animationOptions animations:^{
+        _alertWindowHeight = keyboardFrameEnd.origin.y;
+        CGPoint center = alertView.center;
+        switch (_style) {
+            case RCAlertControllerStyleActionSheet:
+                center.y = _alertWindowHeight - alertView.bounds.size.height / 2.0;
+                break;
+            case RCAlertControllerStyleAlert:
+                center.y = _alertWindowHeight / 2.0;
+                break;
+        }
+        alertView.center = center;
+    } completion:nil];
 }
 
 - (void)_dismissAlert {
@@ -72,8 +111,8 @@
     _alertWindow.windowLevel = UIWindowLevelAlert;
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     _alertWindow.windowLevel = UIWindowLevelNormal;
 }
 
@@ -86,17 +125,18 @@
     _alertWindow.rootViewController = rootViewController;
     UIView *rootView = rootViewController.view;
     UIView *alertView = self.view;
-    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    CGSize alertWindowSize = _alertWindow.bounds.size;
+    alertWindowSize.height = _alertWindowHeight;
     CGSize alertViewSize = alertView.bounds.size;
     switch (_style) {
         case RCAlertControllerStyleActionSheet:
             alertView.alpha = 1.0;
-            alertView.center = CGPointMake(screenSize.width / 2.0, screenSize.height + alertViewSize.height / 2.0);
+            alertView.center = CGPointMake(alertWindowSize.width / 2.0, alertWindowSize.height + alertViewSize.height / 2.0);
             alertView.transform = CGAffineTransformIdentity;
             break;
         case RCAlertControllerStyleAlert:
             alertView.alpha = 0.0;
-            alertView.center = CGPointMake(screenSize.width / 2.0, screenSize.height / 2.0);
+            alertView.center = CGPointMake(alertWindowSize.width / 2.0, alertWindowSize.height / 2.0);
             alertView.transform = CGAffineTransformMakeScale(1.2, 1.2);
             break;
     }
@@ -107,13 +147,14 @@
     [_alertWindow makeKeyAndVisible];
     NSTimeInterval animationDuration = animated ? _animationDuration : 0.0;
     [rootViewController addChildViewController:self];
+    [alertView layoutIfNeeded];
     _animating = YES;
     [UIView animateWithDuration:animationDuration delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:0 animations:^{
         if (_dimsBackgroundDuringPresentation)
             _dimmingView.alpha = 0.4;
         switch (_style) {
             case RCAlertControllerStyleActionSheet:
-                alertView.center = CGPointMake(screenSize.width / 2.0, screenSize.height - alertViewSize.height / 2.0);
+                alertView.center = CGPointMake(alertWindowSize.width / 2.0, alertWindowSize.height - alertViewSize.height / 2.0);
                 break;
             case RCAlertControllerStyleAlert:
                 alertView.alpha = 1.0;
@@ -170,6 +211,10 @@
         if (completion != nil)
             completion();
     }];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

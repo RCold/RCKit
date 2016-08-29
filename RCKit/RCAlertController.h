@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger, RCAlertControllerStyle) {
 @protocol RCAlertControllerDelegate;
 
 NS_CLASS_AVAILABLE_IOS(7_0) @interface RCAlertController : UIViewController {
+    CGFloat _alertWindowHeight;
     RCAlertControllerStyle _style;
     UIWindow *_alertWindow;
     UIView *_dimmingView;
