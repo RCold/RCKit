@@ -22,8 +22,6 @@
 #import "RCButtonCollectionView.h"
 #import "RCDropdownView.h"
 #import "RCImage.h"
-#import "RCLineChartView.h"
-#import "RCLockView.h"
 #import "RCNavigationBar.h"
 #import "RCNavigationItem.h"
 #import "RCPhotoView.h"
