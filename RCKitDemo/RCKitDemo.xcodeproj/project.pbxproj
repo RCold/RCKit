@@ -20,10 +20,8 @@
 		C325D0831C7FF8D3005F4902 /* RCButtonCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D0731C7FF8D3005F4902 /* RCButtonCollectionView.m */; };
 		C325D0841C7FF8D3005F4902 /* RCImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D0751C7FF8D3005F4902 /* RCImage.m */; };
 		C325D0881C7FF8D3005F4902 /* RCNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D07D1C7FF8D3005F4902 /* RCNavigationBar.m */; };
-		C325D0891C7FF8D3005F4902 /* RCNavigationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D07F1C7FF8D3005F4902 /* RCNavigationItem.m */; };
 		C325D08A1C7FF8D3005F4902 /* RCTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C325D0811C7FF8D3005F4902 /* RCTextField.m */; };
 		C348702C1CC9D497007F24E3 /* RCSegmentedBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C34870291CC9D497007F24E3 /* RCSegmentedBar.m */; };
-		C348702D1CC9D497007F24E3 /* RCSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = C348702B1CC9D497007F24E3 /* RCSeparatorView.m */; };
 		C35D926C1CD1F51B00EA3B8F /* RCDropdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35D92691CD1F51B00EA3B8F /* RCDropdownView.m */; };
 		C35D926D1CD1F51B00EA3B8F /* RCSegmentedBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = C35D926B1CD1F51B00EA3B8F /* RCSegmentedBarController.m */; };
 		C36D04D81CA133E700D18132 /* RCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C36D04D71CA133E700D18132 /* RCSearchBar.m */; };
@@ -57,14 +55,10 @@
 		C325D0761C7FF8D3005F4902 /* RCKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCKit.h; sourceTree = "<group>"; };
 		C325D07C1C7FF8D3005F4902 /* RCNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNavigationBar.h; sourceTree = "<group>"; };
 		C325D07D1C7FF8D3005F4902 /* RCNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNavigationBar.m; sourceTree = "<group>"; };
-		C325D07E1C7FF8D3005F4902 /* RCNavigationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNavigationItem.h; sourceTree = "<group>"; };
-		C325D07F1C7FF8D3005F4902 /* RCNavigationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNavigationItem.m; sourceTree = "<group>"; };
 		C325D0801C7FF8D3005F4902 /* RCTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTextField.h; sourceTree = "<group>"; };
 		C325D0811C7FF8D3005F4902 /* RCTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTextField.m; sourceTree = "<group>"; };
 		C34870281CC9D497007F24E3 /* RCSegmentedBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSegmentedBar.h; sourceTree = "<group>"; };
 		C34870291CC9D497007F24E3 /* RCSegmentedBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSegmentedBar.m; sourceTree = "<group>"; };
-		C348702A1CC9D497007F24E3 /* RCSeparatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSeparatorView.h; sourceTree = "<group>"; };
-		C348702B1CC9D497007F24E3 /* RCSeparatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSeparatorView.m; sourceTree = "<group>"; };
 		C35D92681CD1F51B00EA3B8F /* RCDropdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDropdownView.h; sourceTree = "<group>"; };
 		C35D92691CD1F51B00EA3B8F /* RCDropdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDropdownView.m; sourceTree = "<group>"; };
 		C35D926A1CD1F51B00EA3B8F /* RCSegmentedBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSegmentedBarController.h; sourceTree = "<group>"; };
@@ -165,8 +159,6 @@
 				C325D0761C7FF8D3005F4902 /* RCKit.h */,
 				C325D07C1C7FF8D3005F4902 /* RCNavigationBar.h */,
 				C325D07D1C7FF8D3005F4902 /* RCNavigationBar.m */,
-				C325D07E1C7FF8D3005F4902 /* RCNavigationItem.h */,
-				C325D07F1C7FF8D3005F4902 /* RCNavigationItem.m */,
 				C39A68FD1CCB2C5800385BE1 /* RCPhotoView.h */,
 				C39A68FE1CCB2C5800385BE1 /* RCPhotoView.m */,
 				C36D04D61CA133E700D18132 /* RCSearchBar.h */,
@@ -175,8 +167,6 @@
 				C34870291CC9D497007F24E3 /* RCSegmentedBar.m */,
 				C35D926A1CD1F51B00EA3B8F /* RCSegmentedBarController.h */,
 				C35D926B1CD1F51B00EA3B8F /* RCSegmentedBarController.m */,
-				C348702A1CC9D497007F24E3 /* RCSeparatorView.h */,
-				C348702B1CC9D497007F24E3 /* RCSeparatorView.m */,
 				C325D0801C7FF8D3005F4902 /* RCTextField.h */,
 				C325D0811C7FF8D3005F4902 /* RCTextField.m */,
 				C3CD1BF11D704D26006B01E4 /* RCTextView.h */,
@@ -255,7 +245,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C348702D1CC9D497007F24E3 /* RCSeparatorView.m in Sources */,
 				C39A68FF1CCB2C5800385BE1 /* RCPhotoView.m in Sources */,
 				C35D926D1CD1F51B00EA3B8F /* RCSegmentedBarController.m in Sources */,
 				C348702C1CC9D497007F24E3 /* RCSegmentedBar.m in Sources */,
@@ -265,7 +254,6 @@
 				C313CB931C82D1330014FC1E /* CustomAlertController.m in Sources */,
 				C325D0841C7FF8D3005F4902 /* RCImage.m in Sources */,
 				C325D08A1C7FF8D3005F4902 /* RCTextField.m in Sources */,
-				C325D0891C7FF8D3005F4902 /* RCNavigationItem.m in Sources */,
 				C36D04D81CA133E700D18132 /* RCSearchBar.m in Sources */,
 				C325D0831C7FF8D3005F4902 /* RCButtonCollectionView.m in Sources */,
 				C313CB9A1C82D3020014FC1E /* ShowActionSheetSegue.m in Sources */,
