@@ -1,8 +1,8 @@
 //
-//  RCNavigationBar.h
+//  UIView+RCKit.h
 //  RCKit
 //
-//  Created by Yeuham Wang on 16/1/27.
+//  Created by Yeuham Wang on 16/9/9.
 //  Copyright (c) 2016 Yeuham Wang.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,11 +20,8 @@
 
 #import <UIKit/UIKit.h>
 
-NS_CLASS_AVAILABLE_IOS(7_0) @interface RCNavigationBar : UINavigationBar {
-    UIView *_backgroundView;
-    UIView *_shadowView;
-}
+@interface UIView (RCKit)
 
-@property (nonatomic) BOOL hidesShadow UI_APPEARANCE_SELECTOR;
+- (NSArray *)subviewsThatIsClassNamed:(NSString *)className;
 
 @end

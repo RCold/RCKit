@@ -19,18 +19,7 @@
 //
 
 #import "RCSearchBar.h"
-
-@interface UISearchBarTextField : UITextField
-
-- (UIColor *)_placeholderColor;
-
-@end
-
-@interface UISearchBar (RCSearchBar)
-
-- (UISearchBarTextField *)_searchBarTextField;
-
-@end
+#import "UIView+RCKit.h"
 
 @implementation RCSearchBar
 
@@ -49,66 +38,57 @@
 }
 
 - (void)_initRCSearchBar {
-    if ([[self _searchBarTextField] respondsToSelector:@selector(_placeholderColor)])
-        _placeholderColor = [[self _searchBarTextField] _placeholderColor];
-    else
-        _placeholderColor = [UIColor colorWithWhite:0.7 alpha:1.0];
-}
-
-- (UISearchBarTextField *)_searchBarTextField {
-    if ([super respondsToSelector:@selector(_searchBarTextField)])
-        return [super _searchBarTextField];
-    return nil;
+    _searchBarTextField = [self subviewsThatIsClassNamed:@"UISearchBarTextField"].firstObject;
+    self.placeholderColor = [UIColor colorWithWhite:0.0 alpha:0.22];
 }
 
 - (void)_updatePlaceholderColor {
-    UISearchBarTextField *searchBarTextField = [self _searchBarTextField];
-    NSMutableAttributedString *attributedPlaceholder = [searchBarTextField.attributedPlaceholder mutableCopy];
-    [attributedPlaceholder addAttribute:NSForegroundColorAttributeName value:_placeholderColor range:NSMakeRange(0, attributedPlaceholder.length)];
-    searchBarTextField.attributedPlaceholder = attributedPlaceholder;
-    UIImageView *leftView = (UIImageView *)searchBarTextField.leftView;
+    NSMutableAttributedString *attributedPlaceholder = [_searchBarTextField.attributedPlaceholder mutableCopy];
+    [attributedPlaceholder addAttribute:NSForegroundColorAttributeName value:self.placeholderColor range:NSMakeRange(0, attributedPlaceholder.length)];
+    _searchBarTextField.attributedPlaceholder = attributedPlaceholder;
+    UIImageView *leftView = (UIImageView *)_searchBarTextField.leftView;
     leftView.image = [leftView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftView.tintColor = _placeholderColor;
+    leftView.tintColor = self.placeholderColor;
 }
 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
-    [self _searchBarTextField].attributedText = attributedText;
+    _searchBarTextField.attributedText = attributedText;
 }
 
 - (NSAttributedString *)attributedText {
-    return [self _searchBarTextField].attributedText;
+    return _searchBarTextField.attributedText;
 }
 
 - (void)setFont:(UIFont *)font {
-    [self _searchBarTextField].font = font;
+    _searchBarTextField.font = font;
 }
 
 - (UIFont *)font {
-    return [self _searchBarTextField].font;
+    return _searchBarTextField.font;
 }
 
 - (void)setTextColor:(UIColor *)textColor {
-    [self _searchBarTextField].textColor = textColor;
+    _searchBarTextField.textColor = textColor;
 }
 
 - (UIColor *)textColor {
-    return [self _searchBarTextField].textColor;
+    return _searchBarTextField.textColor;
 }
 
 - (void)setTextAlignment:(NSTextAlignment)textAlignment {
-    [self _searchBarTextField].textAlignment = textAlignment;
+    _searchBarTextField.textAlignment = textAlignment;
 }
 
 - (NSTextAlignment)textAlignment {
-    return [self _searchBarTextField].textAlignment;
+    return _searchBarTextField.textAlignment;
 }
 
 - (void)setDefaultTextAttributes:(NSDictionary *)defaultTextAttributes {
-    [self _searchBarTextField].defaultTextAttributes = defaultTextAttributes;
+    _searchBarTextField.defaultTextAttributes = defaultTextAttributes;
 }
 
 - (NSDictionary *)defaultTextAttributes {
-    return [self _searchBarTextField].defaultTextAttributes;
+    return _searchBarTextField.defaultTextAttributes;
 }
 
 - (void)setPlaceholder:(NSString *)placeholder {
@@ -117,11 +97,11 @@
 }
 
 - (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholder {
-    [self _searchBarTextField].attributedPlaceholder = attributedPlaceholder;
+    _searchBarTextField.attributedPlaceholder = attributedPlaceholder;
 }
 
 - (NSAttributedString *)attributedPlaceholder {
-    return [self _searchBarTextField].attributedPlaceholder;
+    return _searchBarTextField.attributedPlaceholder;
 }
 
 - (void)setPlaceholderColor:(UIColor *)placeholderColor {
@@ -130,35 +110,35 @@
 }
 
 - (void)setTypingAttributes:(NSDictionary *)typingAttributes {
-    [self _searchBarTextField].typingAttributes = typingAttributes;
+    _searchBarTextField.typingAttributes = typingAttributes;
 }
 
 - (NSDictionary *)typingAttributes {
-    return [self _searchBarTextField].typingAttributes;
+    return _searchBarTextField.typingAttributes;
 }
 
 - (void)setAdjustsFontSizeToFitWidth:(BOOL)adjustsFontSizeToFitWidth {
-    [self _searchBarTextField].adjustsFontSizeToFitWidth = adjustsFontSizeToFitWidth;
+    _searchBarTextField.adjustsFontSizeToFitWidth = adjustsFontSizeToFitWidth;
 }
 
 - (BOOL)adjustsFontSizeToFitWidth {
-    return [self _searchBarTextField].adjustsFontSizeToFitWidth;
+    return _searchBarTextField.adjustsFontSizeToFitWidth;
 }
 
 - (void)setMinimumFontSize:(CGFloat)minimumFontSize {
-    [self _searchBarTextField].minimumFontSize = minimumFontSize;
+    _searchBarTextField.minimumFontSize = minimumFontSize;
 }
 
 - (CGFloat)minimumFontSize {
-    return [self _searchBarTextField].minimumFontSize;
+    return _searchBarTextField.minimumFontSize;
 }
 
 - (void)setClearButtonMode:(UITextFieldViewMode)clearButtonMode {
-    [self _searchBarTextField].clearButtonMode = clearButtonMode;
+    _searchBarTextField.clearButtonMode = clearButtonMode;
 }
 
 - (UITextFieldViewMode)clearButtonMode {
-    return [self _searchBarTextField].clearButtonMode;
+    return _searchBarTextField.clearButtonMode;
 }
 
 @end

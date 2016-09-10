@@ -38,17 +38,18 @@
 
 - (void)_initRCDropdownView {
     _animating = NO;
-    _animationDuration = 0.2;
     _clippingView = [[UIView alloc] initWithFrame:CGRectZero];
     _clippingView.clipsToBounds = YES;
     _containerView = [[UIView alloc] initWithFrame:CGRectZero];
     _dimmingView = [[UIView alloc] initWithFrame:CGRectZero];
     _dimmingView.backgroundColor = [UIColor blackColor];
-    _dimsBackgroundDuringPresentation = YES;
     _presented = NO;
     _tappingView = [[UIView alloc] initWithFrame:CGRectZero];
     _tappingView.backgroundColor = [UIColor clearColor];
     [_tappingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dismissViewForGestureRecognizer:)]];
+    self.delegate = nil;
+    self.dimsBackgroundDuringPresentation = YES;
+    self.animationDuration = 0.2;
 }
 
 - (void)_dismissView {
@@ -69,8 +70,8 @@
 }
 
 - (void)presentInView:(UIView *)view atPoint:(CGPoint)point withDirection:(RCDropdownViewDirection)direction animated:(BOOL)animated completion:(void (^)(void))completion {
-    if ([_delegate respondsToSelector:@selector(willPresentDropdownView:)])
-        [_delegate willPresentDropdownView:self];
+    if ([self.delegate respondsToSelector:@selector(willPresentDropdownView:)])
+        [self.delegate willPresentDropdownView:self];
     [self _dismissView];
     CGSize size = self.bounds.size;
     CGRect finalViewFrame = CGRectMake(0.0, 0.0, size.width, size.height);
@@ -109,10 +110,10 @@
     [_containerView addSubview:_tappingView];
     [_containerView addSubview:_clippingView];
     [presentingView addSubview:_containerView];
-    NSTimeInterval animationDuration = animated ? _animationDuration : 0.0;
+    NSTimeInterval animationDuration = animated ? self.animationDuration : 0.0;
     _animating = YES;
     [UIView animateWithDuration:animationDuration animations:^{
-        if (_dimsBackgroundDuringPresentation)
+        if (self.dimsBackgroundDuringPresentation)
             _dimmingView.alpha = 0.4;
         _clippingView.frame = clipperFinalViewFrame;
         self.frame = finalViewFrame;
@@ -121,25 +122,25 @@
             return;
         _animating = NO;
         _presented = YES;
-        if ([_delegate respondsToSelector:@selector(didPresentDropdownView:)])
-            [_delegate didPresentDropdownView:self];
+        if ([self.delegate respondsToSelector:@selector(didPresentDropdownView:)])
+            [self.delegate didPresentDropdownView:self];
         if (completion != nil)
             completion();
     }];
 }
 
 - (void)dismissViewAnimated:(BOOL)animated completion:(void (^)(void))completion {
-    if ([_delegate respondsToSelector:@selector(willDismissDropdownView:)])
-        [_delegate willDismissDropdownView:self];
+    if ([self.delegate respondsToSelector:@selector(willDismissDropdownView:)])
+        [self.delegate willDismissDropdownView:self];
     _presented = NO;
     if (_animating) {
         _animating = NO;
         [self _dismissView];
-        if ([_delegate respondsToSelector:@selector(didDismissDropdownView:)])
-            [_delegate didDismissDropdownView:self];
+        if ([self.delegate respondsToSelector:@selector(didDismissDropdownView:)])
+            [self.delegate didDismissDropdownView:self];
         return;
     }
-    NSTimeInterval animationDuration = animated ? _animationDuration : 0.0;
+    NSTimeInterval animationDuration = animated ? self.animationDuration : 0.0;
     _animating = YES;
     [UIView animateWithDuration:animationDuration animations:^{
         _dimmingView.alpha = 0.0;
@@ -149,8 +150,8 @@
             return;
         _animating = NO;
         [self _dismissView];
-        if ([_delegate respondsToSelector:@selector(didDismissDropdownView:)])
-            [_delegate didDismissDropdownView:self];
+        if ([self.delegate respondsToSelector:@selector(didDismissDropdownView:)])
+            [self.delegate didDismissDropdownView:self];
         if (completion != nil)
             completion();
     }];

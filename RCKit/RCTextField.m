@@ -20,12 +20,6 @@
 
 #import "RCTextField.h"
 
-@interface UITextField (RCTextField)
-
-- (UIColor *)_placeholderColor;
-
-@end
-
 @implementation RCTextField
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -43,15 +37,12 @@
 }
 
 - (void)_initRCTextField {
-    if ([super respondsToSelector:@selector(_placeholderColor)])
-        _placeholderColor = [super _placeholderColor];
-    else
-        _placeholderColor = [UIColor colorWithWhite:0.7 alpha:1.0];
+    self.placeholderColor = [UIColor colorWithWhite:0.0 alpha:0.22];
 }
 
 - (void)_updatePlaceholderColor {
     NSMutableAttributedString *attributedPlaceholder = [super.attributedPlaceholder mutableCopy];
-    [attributedPlaceholder addAttribute:NSForegroundColorAttributeName value:_placeholderColor range:NSMakeRange(0, attributedPlaceholder.length)];
+    [attributedPlaceholder addAttribute:NSForegroundColorAttributeName value:self.placeholderColor range:NSMakeRange(0, attributedPlaceholder.length)];
     super.attributedPlaceholder = attributedPlaceholder;
 }
 

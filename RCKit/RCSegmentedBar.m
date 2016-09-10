@@ -37,44 +37,39 @@
 }
 
 - (void)_initRCSegmentedBar {
-    _buttons = nil;
+    _buttons = [NSMutableArray array];
     _indicatorBar = [[UIView alloc] initWithFrame:CGRectZero];
-    _items = nil;
-    _titleColor = [UIColor lightGrayColor];
-    _titleFont = [UIFont systemFontOfSize:15.0];
-    _indicatorBarHeight = 2.0;
-    _indicatorBarOffset = 0.0;
-    _animateDuration = 0.3;
+    self.delegate = nil;
+    self.items = nil;
+    self.titleColor = [UIColor lightGrayColor];
+    self.titleFont = [UIFont systemFontOfSize:15.0];
+    self.selectedSegmentIndex = 0;
+    self.indicatorBarHeight = 2.0;
+    self.indicatorBarOffset = 0.0;
+    self.animateDuration = 0.3;
     [self addSubview:_indicatorBar];
 }
 
 - (void)_updateSubviews {
     for (UIButton *button in _buttons) {
         button.selected = NO;
-        [button setTitleColor:_titleColor forState:UIControlStateNormal];
-        [button setTitleColor:_titleColor forState:UIControlStateHighlighted];
+        [button setTitleColor:self.titleColor forState:UIControlStateNormal];
+        [button setTitleColor:self.titleColor forState:UIControlStateHighlighted];
         [button setTitleColor:self.tintColor forState:UIControlStateSelected];
         [button addTarget:self action:@selector(_buttonDidTouch:) forControlEvents:UIControlEventTouchUpInside];
-        button.titleLabel.font = _titleFont;
+        button.titleLabel.font = self.titleFont;
     }
     [_buttons.firstObject setSelected:YES];
     _indicatorBar.backgroundColor = self.tintColor;
     [self setNeedsLayout];
 }
 
-- (void)_setSelectedSegmentIndex:(NSInteger)selectedSegmentIndex {
-    if (selectedSegmentIndex < 0)
-        selectedSegmentIndex = 0;
-    else if (selectedSegmentIndex > _items.count - 1)
-        selectedSegmentIndex = _items.count - 1;
-    for (UIButton *button in _buttons)
-        button.selected = NO;
-    [_buttons[selectedSegmentIndex] setSelected:YES];
-}
-
 - (void)_buttonDidTouch:(id)sender {
-    if ([_delegate respondsToSelector:@selector(segmentedBar:buttonAtIndexDidTouch:)])
-        [_delegate segmentedBar:self buttonAtIndexDidTouch:[_buttons indexOfObject:sender]];
+    NSInteger index = [_buttons indexOfObject:sender];
+    if ([self.delegate respondsToSelector:@selector(segmentedBar:buttonAtIndexDidTouch:)])
+        [self.delegate segmentedBar:self buttonAtIndexDidTouch:index];
+    else
+        [self setSelectedSegmentIndex:index animated:YES];
 }
 
 - (void)setItems:(NSArray *)items {
@@ -100,10 +95,13 @@
 }
 
 - (void)setSelectedSegmentIndex:(NSInteger)selectedSegmentIndex {
-    _selectedSegmentIndex = selectedSegmentIndex;
-    [self _setSelectedSegmentIndex:selectedSegmentIndex];
+    self.indicatorBarOffset = (CGFloat)selectedSegmentIndex;
+}
+
+- (void)setSelectedSegmentIndex:(NSInteger)selectedSegmentIndex animated:(BOOL)animated {
+    NSTimeInterval animateDuration = animated ? self.animateDuration : 0.0;
     [self layoutIfNeeded];
-    [UIView animateWithDuration:_animateDuration animations:^{
+    [UIView animateWithDuration:animateDuration animations:^{
         self.indicatorBarOffset = selectedSegmentIndex;
         [self layoutIfNeeded];
     }];
@@ -117,7 +115,14 @@
 - (void)setIndicatorBarOffset:(CGFloat)indicatorBarOffset {
     _indicatorBarOffset = indicatorBarOffset;
     _selectedSegmentIndex = (NSInteger)(indicatorBarOffset + 0.5);
-    [self _setSelectedSegmentIndex:_selectedSegmentIndex];
+    if (_selectedSegmentIndex < 0)
+        _selectedSegmentIndex = 0;
+    else if (_buttons.count > 0 && _selectedSegmentIndex > _buttons.count - 1)
+        _selectedSegmentIndex = self.items.count - 1;
+    for (UIButton *button in _buttons)
+        button.selected = NO;
+    if (_buttons.count > 0)
+        [_buttons[self.selectedSegmentIndex] setSelected:YES];
     [self setNeedsLayout];
 }
 
@@ -129,13 +134,13 @@
     [super layoutSubviews];
     CGSize size = self.bounds.size;
     CGRect buttonFrame = CGRectZero;
-    if (_items.count != 0)
-        buttonFrame.size = CGSizeMake(size.width / _items.count, size.height - _indicatorBarHeight);
+    if (self.items.count != 0)
+        buttonFrame.size = CGSizeMake(size.width / self.items.count, size.height - self.indicatorBarHeight);
     for (UIButton *button in _buttons) {
         button.frame = buttonFrame;
         buttonFrame.origin.x += buttonFrame.size.width;
     }
-    _indicatorBar.frame = CGRectMake(buttonFrame.size.width * _indicatorBarOffset, size.height - _indicatorBarHeight, buttonFrame.size.width, _indicatorBarHeight);
+    _indicatorBar.frame = CGRectMake(buttonFrame.size.width * self.indicatorBarOffset, size.height - self.indicatorBarHeight, buttonFrame.size.width, self.indicatorBarHeight);
 }
 
 @end

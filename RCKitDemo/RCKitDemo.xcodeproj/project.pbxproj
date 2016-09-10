@@ -27,6 +27,7 @@
 		C36D04D81CA133E700D18132 /* RCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C36D04D71CA133E700D18132 /* RCSearchBar.m */; };
 		C39A68FF1CCB2C5800385BE1 /* RCPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39A68FE1CCB2C5800385BE1 /* RCPhotoView.m */; };
 		C3CD1BF31D704D26006B01E4 /* RCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3CD1BF21D704D26006B01E4 /* RCTextView.m */; };
+		C3D8BB561D83DBAB002368A3 /* UIView+RCKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C3D8BB551D83DBAB002368A3 /* UIView+RCKit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +70,8 @@
 		C39A68FE1CCB2C5800385BE1 /* RCPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPhotoView.m; sourceTree = "<group>"; };
 		C3CD1BF11D704D26006B01E4 /* RCTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTextView.h; sourceTree = "<group>"; };
 		C3CD1BF21D704D26006B01E4 /* RCTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTextView.m; sourceTree = "<group>"; };
+		C3D8BB541D83DBAB002368A3 /* UIView+RCKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+RCKit.h"; sourceTree = "<group>"; };
+		C3D8BB551D83DBAB002368A3 /* UIView+RCKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+RCKit.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +174,8 @@
 				C325D0811C7FF8D3005F4902 /* RCTextField.m */,
 				C3CD1BF11D704D26006B01E4 /* RCTextView.h */,
 				C3CD1BF21D704D26006B01E4 /* RCTextView.m */,
+				C3D8BB541D83DBAB002368A3 /* UIView+RCKit.h */,
+				C3D8BB551D83DBAB002368A3 /* UIView+RCKit.m */,
 			);
 			name = RCKit;
 			path = ../RCKit;
@@ -261,6 +266,7 @@
 				C325D05A1C7FF8B8005F4902 /* main.m in Sources */,
 				C3CD1BF31D704D26006B01E4 /* RCTextView.m in Sources */,
 				C325D0821C7FF8D3005F4902 /* RCAlertController.m in Sources */,
+				C3D8BB561D83DBAB002368A3 /* UIView+RCKit.m in Sources */,
 				C325D0881C7FF8D3005F4902 /* RCNavigationBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

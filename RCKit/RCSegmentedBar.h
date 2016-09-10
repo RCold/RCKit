@@ -36,6 +36,8 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface RCSegmentedBar : UIView {
 @property (nonatomic) CGFloat indicatorBarOffset;
 @property (nonatomic) CGFloat animateDuration;
 
+- (void)setSelectedSegmentIndex:(NSInteger)selectedSegmentIndex animated:(BOOL)animated;
+
 @end
 
 @protocol RCSegmentedBarDelegate <NSObject>

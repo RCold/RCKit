@@ -40,14 +40,15 @@
     _alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     _alertWindowHeight = _alertWindow.bounds.size.height;
     _animating = NO;
-    _animationDuration = 0.4;
     _dimmingView = [[UIView alloc] initWithFrame:_alertWindow.bounds];
     _dimmingView.backgroundColor = [UIColor blackColor];
-    _dimsBackgroundDuringPresentation = YES;
     _presented = NO;
     _tappingView = [[UIView alloc] initWithFrame:_alertWindow.bounds];
     _tappingView.backgroundColor = [UIColor clearColor];
     [_tappingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_dismissAlertForGestureRecognizer:)]];
+    self.delegate = nil;
+    self.dimsBackgroundDuringPresentation = YES;
+    self.animationDuration = 0.4;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_positionAlertForNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
@@ -117,8 +118,8 @@
 }
 
 - (void)presentAlertWithStyle:(RCAlertControllerStyle)style animated:(BOOL)animated completion:(void (^)(void))completion {
-    if ([_delegate respondsToSelector:@selector(willPresentAlertController:)])
-        [_delegate willPresentAlertController:self];
+    if ([self.delegate respondsToSelector:@selector(willPresentAlertController:)])
+        [self.delegate willPresentAlertController:self];
     [self _dismissAlert];
     _style = style;
     UIViewController *rootViewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
@@ -145,12 +146,12 @@
     [rootView addSubview:_tappingView];
     [rootView addSubview:alertView];
     [_alertWindow makeKeyAndVisible];
-    NSTimeInterval animationDuration = animated ? _animationDuration : 0.0;
+    NSTimeInterval animationDuration = animated ? self.animationDuration : 0.0;
     [rootViewController addChildViewController:self];
     [alertView layoutIfNeeded];
     _animating = YES;
     [UIView animateWithDuration:animationDuration delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:0 animations:^{
-        if (_dimsBackgroundDuringPresentation)
+        if (self.dimsBackgroundDuringPresentation)
             _dimmingView.alpha = 0.4;
         switch (_style) {
             case RCAlertControllerStyleActionSheet:
@@ -167,28 +168,28 @@
         _animating = NO;
         _presented = YES;
         [self didMoveToParentViewController:rootViewController];
-        if ([_delegate respondsToSelector:@selector(didPresentAlertController:)])
-            [_delegate didPresentAlertController:self];
+        if ([self.delegate respondsToSelector:@selector(didPresentAlertController:)])
+            [self.delegate didPresentAlertController:self];
         if (completion != nil)
             completion();
     }];
 }
 
 - (void)dismissAlertAnimated:(BOOL)animated completion:(void (^)(void))completion {
-    if ([_delegate respondsToSelector:@selector(willDismissAlertController:)])
-        [_delegate willDismissAlertController:self];
+    if ([self.delegate respondsToSelector:@selector(willDismissAlertController:)])
+        [self.delegate willDismissAlertController:self];
     _presented = NO;
     if (_animating) {
         _animating = NO;
         [self _dismissAlert];
-        if ([_delegate respondsToSelector:@selector(didDismissAlertController:)])
-            [_delegate didDismissAlertController:self];
+        if ([self.delegate respondsToSelector:@selector(didDismissAlertController:)])
+            [self.delegate didDismissAlertController:self];
         return;
     }
     UIView *alertView = self.view;
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     CGSize alertViewSize = alertView.bounds.size;
-    NSTimeInterval animationDuration = animated ? _animationDuration : 0.0;
+    NSTimeInterval animationDuration = animated ? self.animationDuration : 0.0;
     [self willMoveToParentViewController:nil];
     _animating = YES;
     [UIView animateWithDuration:animationDuration delay:0.0 usingSpringWithDamping:1.0 initialSpringVelocity:0.0 options:0 animations:^{
@@ -206,8 +207,8 @@
             return;
         _animating = NO;
         [self _dismissAlert];
-        if ([_delegate respondsToSelector:@selector(didDismissAlertController:)])
-            [_delegate didDismissAlertController:self];
+        if ([self.delegate respondsToSelector:@selector(didDismissAlertController:)])
+            [self.delegate didDismissAlertController:self];
         if (completion != nil)
             completion();
     }];

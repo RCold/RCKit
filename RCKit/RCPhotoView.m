@@ -42,15 +42,15 @@
     _imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     _imageView.contentMode = UIViewContentModeScaleAspectFill;
     _imageView.clipsToBounds = YES;
-    _contentSize = CGSizeZero;
     [_scrollView addSubview:_imageView];
+    self.contentSize = CGSizeZero;
     [self addSubview:_scrollView];
 }
 
 - (void)setImage:(UIImage *)image {
     _imageView.image = image;
-    if (CGSizeEqualToSize(_contentSize, CGSizeZero))
-        _contentSize = image.size;
+    if (CGSizeEqualToSize(self.contentSize, CGSizeZero))
+        self.contentSize = image.size;
     [self setNeedsLayout];
 }
 
@@ -134,8 +134,8 @@
     CGSize size = bounds.size;
     CGFloat zoomScale = _scrollView.zoomScale;
     CGSize imageViewSize;
-    imageViewSize.width = _contentSize.width * zoomScale;
-    imageViewSize.height = _contentSize.height * zoomScale;
+    imageViewSize.width = self.contentSize.width * zoomScale;
+    imageViewSize.height = self.contentSize.height * zoomScale;
     CGSize contentSize;
     contentSize.width = MAX(size.width, imageViewSize.width);
     contentSize.height = MAX(size.height, imageViewSize.height);

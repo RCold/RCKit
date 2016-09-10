@@ -19,25 +19,35 @@
 //
 
 #import "RCNavigationBar.h"
-
-@interface UINavigationBar (RCNavigationBar)
-
-- (void)_setHidesShadow:(BOOL)hidesShadow;
-- (BOOL)_hidesShadow;
-
-@end
+#import "UIView+RCKit.h"
 
 @implementation RCNavigationBar
 
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self != nil)
+        [self _initRCNavigationBar];
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    if (self != nil)
+        [self _initRCNavigationBar];
+    return self;
+}
+
+- (void)_initRCNavigationBar {
+    _backgroundView = [self subviewsThatIsClassNamed:@"UINavigationBarBackground"].firstObject;
+    _shadowView = [_backgroundView subviewsThatIsClassNamed:@"UIImageView"].lastObject;
+}
+
 - (void)setHidesShadow:(BOOL)hidesShadow {
-    if ([super respondsToSelector:@selector(_setHidesShadow:)])
-        [super _setHidesShadow:hidesShadow];
+    _shadowView.hidden = hidesShadow;
 }
 
 - (BOOL)hidesShadow {
-    if ([super respondsToSelector:@selector(_hidesShadow)])
-        return [super _hidesShadow];
-    return NO;
+    return _shadowView.hidden;
 }
 
 @end
