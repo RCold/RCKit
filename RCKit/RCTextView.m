@@ -41,7 +41,7 @@
     _placeholderLabel.font = self.font;
     _placeholderLabel.numberOfLines = 0;
     _placeholderLabel.preferredMaxLayoutWidth = 0.0;
-    self.placeholderColor = [UIColor colorWithWhite:0.8 alpha:1.0];
+    self.placeholderColor = [UIColor colorWithWhite:0.0 alpha:0.22];
     [self insertSubview:_placeholderLabel atIndex:0];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewTextDidChangeWithNotification:) name:UITextViewTextDidChangeNotification object:self];
 }
@@ -55,8 +55,14 @@
     [self textViewTextDidChangeWithNotification:nil];
 }
 
+- (void)setAttributedText:(NSAttributedString *)attributedText {
+    super.attributedText = attributedText;
+    [self textViewTextDidChangeWithNotification:nil];
+}
+
 - (void)setPlaceholder:(NSString *)placeholder {
     _placeholderLabel.text = placeholder;
+    [self setNeedsLayout];
 }
 
 - (NSString *)placeholder {
@@ -73,6 +79,7 @@
 
 - (void)setAttributedPlaceholder:(NSAttributedString *)attributedPlaceholder {
     _placeholderLabel.attributedText = attributedPlaceholder;
+    [self setNeedsLayout];
 }
 
 - (NSAttributedString *)attributedPlaceholder {
@@ -85,7 +92,7 @@
     frame.origin.x += 4.0;
     frame.origin.y += 8.0;
     frame.size.width -= 8.0;
-    frame.size.height -= 16.0;
+    frame.size.height = 0.0;
     _placeholderLabel.frame = frame;
     [_placeholderLabel sizeToFit];
 }
