@@ -21,7 +21,7 @@
 #import <UIKit/UIKit.h>
 #import "RCSegmentedBar.h"
 
-@interface RCSegmentedBarController : UIViewController <RCSegmentedBarDelegate, UIScrollViewDelegate> {
+NS_CLASS_AVAILABLE_IOS(7_0) @interface RCSegmentedBarController : UIViewController <RCSegmentedBarDelegate, UIScrollViewDelegate> {
     UIScrollView *_scrollView;
 }
 
